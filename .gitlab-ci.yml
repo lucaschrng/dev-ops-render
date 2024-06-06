@@ -92,7 +92,7 @@ heroku_deploy:
     - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
   only:
-    - main
+    - master
 
 sonarcloud-check:
   stage: quality
@@ -108,5 +108,5 @@ sonarcloud-check:
   only:
     - merge_requests
     - main
+    - master
     - develop
-    - SonarQubeConfig
