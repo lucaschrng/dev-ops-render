@@ -109,4 +109,3 @@ sonarcloud-check:
     - merge_requests
     - main
     - develop
-    - SonarQubeConfig

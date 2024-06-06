@@ -1,1 +1,1 @@
-docker exec -it sf5-node bash
+docker exec -it sf5-p3-node bash
