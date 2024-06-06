@@ -12,4 +12,4 @@ RUN apt-get update && apt-get install -y yarn
 
 CMD yarn add encore
 
-WORKDIR /home/wwwroot/sf5-p2
+WORKDIR /home/wwwroot/sf5-p3
