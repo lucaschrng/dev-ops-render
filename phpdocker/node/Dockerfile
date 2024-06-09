@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:22.2.0
 
 RUN apt-get update && \
 	apt-get install -y \

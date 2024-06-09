@@ -19,7 +19,7 @@
         "encore": "^0.0.30-beta"
     },
     "engines": {
-        "node": "latest",
-        "npm": "latest"
+        "node": "22.2.0",
+        "npm": "6.13.4"
     }
 }
