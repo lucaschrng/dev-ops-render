@@ -27,7 +27,7 @@ variables:
   GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
 
   SONAR_TOKEN: "${SONAR_TOKEN}"
-  SONAR_HOST_URL: "https://sonarcloud.io"
+  SONAR_HOST_URL: "${SONAR_HOST_URL}"
 
 stages:          # List of stages for jobs, and their order of execution
   - build
