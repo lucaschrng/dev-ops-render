@@ -62,35 +62,6 @@ lint-test-job:   # This job also runs in the test stage.
     - sleep 10
     - echo "No lint issues found."
 
-#deploy-job:      # This job runs in the deploy stage.
-#  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-#  environment: production
-#  script:
-#    - echo "Deploying application..."
-#    - echo "Application successfully deployed."
-
-
-#heroku_deploy:
-#  stage: deploy
-#  script:
-#    - gem update --system
-#    - gem install dpl
-#    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
-#  only:
-#    - main
-#    - develop
-#    - SonarQubeConfig
-
-
-#heroku_deploy:
-#  stage: production
-#  script:
-#    - gem install dpl
-#    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
-
-
-#image : ruby:latest
-
 heroku_deploy:
   stage: deploy
   script:
@@ -98,8 +69,7 @@ heroku_deploy:
     - apt-get install -yqq ruby ruby-dev nodejs --silent
     - gem update --system
     - gem install dpl
-#    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_PRODUCTION_KEY
-    - dpl --provider=heroku --app=sf5-p3 --api-key=HRKU-2d086b51-9d4e-48f1-8891-6a6c0fb57d62
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_PRODUCTION_KEY
   only:
     - master
 
