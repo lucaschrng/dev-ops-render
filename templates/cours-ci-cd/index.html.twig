@@ -1,0 +1,15 @@
+{#{% extends 'base.html.twig' %}#}
+
+{% block body %}
+    <div class="jumbotron-img jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">TP Cours de CI/CD</h1>
+            <p class="lead">ESTIAM Lyon Juin 2024</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {{ source('cours-ci-cd/sujet_TP_CI_CD.md', ignore_missing = true)|markdown_to_html }}
+        </div>
+    </div>
+{% endblock %}

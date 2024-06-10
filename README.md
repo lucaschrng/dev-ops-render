@@ -41,7 +41,7 @@ symfony serve
 (If this is your first time using this command, you may see an
 error that you need to run `symfony server:ca:install` first).
 
-Now check out the site at `https://localhost:8000`
+Now check out the site at `https://localhost:2010`
 
 Have fun!
 
