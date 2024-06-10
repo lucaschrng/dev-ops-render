@@ -1,0 +1,6 @@
+Groupe;Entreprise;Etablissement;Departement;Matricule;Role;Civilite;Prenom;Nom;Date de naissance;Adresse mail;VIP?;Package
+;diot-siaci;institution AS;department A;9078169;Utilisateur;M;POTE-PTQ;Brice-PTQ;12/05/1972;brice.pote@gmail.com;;Package un
+;diot-siaci;institution B;department B;7992978;Utilisateur;Mme;Paul;Bismuth;12/05/1972;qhxpfojhpr.ydrexredpc_2@gmail.com;VIP PLUS;Package un
+;bad-cmpany-id;institution AS;department B;7094760;Utilisateur;Mlle;Van;Gogh;12/05/1972;bad.company.id@gmail.com;;Package un
+;diot-siaci;institution B;department B;7043683;Utilisateur;M;ThZZpkbLzZ;fcsGDrvoZZ;12/05/1972;bad.emailarobasee@@gmail.com;;Package un
+;diot-siaci;institution A;department B;6175076;Utilisateur;Mlle;TsoIztxbnn;AuJYdYLKnA;12/05/1972;tsoiztxbnn.aujydylkna_5@gmail.com;VIP;Package un
