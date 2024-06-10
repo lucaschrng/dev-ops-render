@@ -1,0 +1,15 @@
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribe
+
+    App\Alice\Loader\CustomOrderLoader:
+        decorates: 'fidry_alice_data_fixtures.loader.simple'
+        arguments:
+            - '@App\Alice\Loader\CustomOrderLoader.inner'
+
+    App\DataFixtures\Providers\HashPasswordProvider:
+        tags: [ { name: nelmio_alice.faker.provider } ]
