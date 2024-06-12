@@ -37,7 +37,7 @@ Pour des raisons de facilité, laisser le nom du projet tel quel : `sf5-p3`
 
 Ce projet dispose d'une stack Docker composée de 8 services :
 
-- ![img_3.png](img_3.png)
+- ![img_3.png](assets/images/img_3.png)
 
 - redis [sf5-p3-redis] : service de cache en mémoire dans une BDD NoSql
 - db [sf5-p3-db] : service de base de données sur moteur MySQL
@@ -54,39 +54,39 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 ### Docker Desktop (wSL2 pour Windows | Docker natif pour Linux et MacOS)
 - 👉 Moteur permettant de créer des conteneurs Docker pour isoler des applications et leurs dépendances.
 
-- ![img_3.png](img_3.png)
+- ![img_3.png](assets/images/img_3.png)
 
 ### GitLab
 - 👉 Plateforme de gestion de dépôts Git, permettant de gérer des projets, des pipelines CI/CD, des issues, des merge requests, etc.
 
-- ![img_4.png](img_4.png)
+- ![img_4.png](assets/images/img_4.png)
 
 ### SonarCloud
 - 👉 Outil d'analyse de code source qui permet de détecter les bugs, les vulnérabilités et les codes en doublon dans le code source.
 
--![img_5.png](img_5.png)
+-![img_5.png](assets/images/img_5.png)
 
 ### Sentry
 - 👉 Outil de centralisation des erreurs qui permet de surveiller et de corriger les erreurs dans les applications en temps réel.
 
--![img_6.png](img_6.png)
+-![img_6.png](assets/images/img_6.png)
 
 #### Heroku
 - 👉 Plateforme cloud qui permet de déployer, de gérer et de mettre à l'échelle des applications.
 
-- ![img_7.png](img_7.png)
+- ![img_7.png](assets/images/img_7.png)
 s
 ## 📦 Installation
 Faire un fork de ce dépôt
 - 👉 Le Fork va permettre de travailler sur une copie du projet original, sans modifier le projet original.
 
-- ![img.png](img.png)
-- ![img_1.png](img_1.png)
+- ![img.png](assets/images/img.png)
+- ![img_1.png](assets/images/img_1.png)
 
 Puis cloner le dépôt en local sur votre machine (en partant du lien `clone with HTTPS` depuis la branche ```master```.
 - 👉 Le clone va permettre de récupérer le projet sur votre machine locale et surtout d'initialiser le dépôt Git local.
 
-- ![img_2.png](img_2.png)
+- ![img_2.png](assets/images/img_2.png)
 - 👉 Dans votre terminal, exécuter la commande suivante :
 
 ```bash
@@ -127,7 +127,7 @@ composer compile
 ### Configuration de GitLab CI/CD
 Permettre à GitLab de se connecter à Sentry, Heroku et SonarCloud dans le cadre de la Pipeline CI/CD.
 Se connecter à son compte GitLab, puis aller dans votre projet, puis dans `Settings` > `CI/CD` > `Variables` et ajouter les variables suivantes :
-- ![img_8.png](img_8.png)
+- ![img_8.png](assets/images/img_8.png)
 
 Laisser pour l'instant toutes les variables vides, elles seront renseignées plus tard.
 1. HEROKU_APP [Nom de l'application Heroku] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
