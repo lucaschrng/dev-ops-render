@@ -37,7 +37,7 @@ Toute la stack Docker nécessaire pour faire fonctionner l'application est déj�
 
 Ce projet dispose d'une stack Docker composée de 8 services :
 
-- ![img_3.png](assets/images/img_3.png)
+- ![Docker Stack](assets/images/docker_start.png)
 
 - redis [sf5-p3-redis] : service de cache en mémoire dans une BDD NoSql
 - db [sf5-p3-db] : service de base de données sur moteur MySQL
@@ -57,27 +57,27 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 - 👉 Le résultat doit être quelque chose comme : `Docker version 2x.yy.z, build jldmkj` : Si `docker` ET docker CLI n'est pas installé, suivre la documentation officielle pour l'installer.
 - ❗ Attention, dans ce cas là, il faut installer Docker Desktop pour Windows ou Docker natif pour Linux et MacOS (bien installer WSL2 pour Windows en prérequis) : https://docs.docker.com/desktop/wsl/
 
-- ![img_3.png](assets/images/img_3.png)
+- ![Docker Stack](assets/images/docker_start.png)
 
 ### GitLab
 - 👉 Plateforme de gestion de dépôts Git, permettant de gérer des projets, des pipelines CI/CD, des issues, des merge requests, etc.
 
-- ![img_4.png](assets/images/img_4.png)
+- ![Gitlab Project](assets/images/gitlab_project.png)
 
 ### SonarCloud
 - 👉 Outil d'analyse de code source qui permet de détecter les bugs, les vulnérabilités et les codes en doublon dans le code source.
 
--![img_5.png](assets/images/img_5.png)
+-![SonarCloud Project](assets/images/sonarcloud_project.png)
 
 ### Sentry
 - 👉 Outil de centralisation des erreurs qui permet de surveiller et de corriger les erreurs dans les applications en temps réel.
 
--![img_6.png](assets/images/img_6.png)
+-![Sentry Project](assets/images/sentry_project.png)
 
 #### Heroku
 - 👉 Plateforme cloud qui permet de déployer, de gérer et de mettre à l'échelle des applications.
 
-- ![img_7.png](assets/images/img_7.png)
+- ![Heroku Project](assets/images/heroku_project.png)
   
 
 
@@ -85,8 +85,8 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 1. Faire un fork de ce dépôt : bien forker le projet en projet avec une visibilité **public** : certain des `outils tiers`, utilisés dans ce projet, nécessitent une visibilité **publique** pour fonctionner.
    - 👉 Le Fork va permettre de travailler sur une copie du projet original, sans modifier le projet original.
 
-   - ![img.png](assets/images/img.png)
-   - ![img_1.png](assets/images/img_1.png)
+   - ![GitLab Fork step 1](assets/images/gitlab_fork_step1.png)
+   - ![GitLab Fork step 2](assets/images/gitlab_fork_step2.png)
 
    
 
@@ -95,6 +95,10 @@ Ce projet dispose d'une stack Docker composée de 8 services :
    - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse)
    - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
    - Donner les droits `755` ou `777` au répertoire `sf5-p3` pour éviter les problèmes de permissions : 
+     - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour ceux et celles que ça intéresse : 
+       - https://doc.ubuntu-fr.org/permissions
+       - https://www.tutos.eu/8869
+       
     ```bash
     sudo chmod -R 777 ~/www/sf5-p3
     ```
@@ -109,7 +113,7 @@ Ce projet dispose d'une stack Docker composée de 8 services :
    - 👉 Le clone va permettre de récupérer le projet sur votre machine locale et surtout d'initialiser le dépôt Git local.
    - ❗ Attention, il est important de cloner le projet depuis votre fork et non depuis le projet original.
 
-   - ![img_2.png](assets/images/img_2.png)
+   - ![GitLab clone](assets/images/gitlab_clone.png)
    - 👉 Dans votre terminal, exécuter la commande suivante :
 
    ```bash
@@ -156,7 +160,7 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 1. Permettre à GitLab de se connecter à Sentry, Heroku et SonarCloud dans le cadre de la Pipeline CI/CD.
    - ❗ Attention, ce projet doit avoir été forké en projet `public` pour que les outils tiers puissent se connecter à GitLab. Penser le cas échéant à vérifier la visibilité du groupe parent si nécessaire, lui aussi doit être en `public`.
    - Se connecter à son compte GitLab, puis aller dans votre projet, puis dans `Settings` > `CI/CD` > `Variables` et ajouter les variables suivantes :
-   - ![img_11.png](assets/images/img_11.png)
+   - ![Gitlab Variables](assets/images/gitlab_variables.png)
 
    - Laisser pour l'instant toutes les variables vides, elles seront renseignées plus tard.
      1. HEROKU_APP [Nom de l'application Heroku] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
@@ -178,30 +182,30 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
 - ❗ Attention, à bien exécuter cette partie et lire ATTENTIVEMENT la documentation sous peine de ne pas réussir à connecter Sentry à GitLab CI/CD
 
-- ![img_3.png](assets/images/img_15.png)
+- ![GitLab Intégration](assets/images/gitlab_integration.png)
 
-- ![img_4.png](assets/images/img_16.png)
+- ![Sentry Step 1](assets/images/sentry_step1.png)
 - 
 - ❗ Attention, Bien lire la doc de la "popup" qui explique les étapes préalables à la connexion de Sentry à GitLab CI/CD avant d'appuyer sur "Suivant" ou "Next" : si ce n'est pas lu, vous n'arriverez pas à établir la connexion entre Sentry et GitLab CI/CD.
 
 
 Bien penser à créer l'application dans Gitlab pour Sentry :
 
-- ![img_2.png](assets/images/img_13.png)
+- ![Sentry Step 2](assets/images/sentry_step2.png)
 
 - ❗ Attention, bien utiliser l'url suivante pour dans la partie `Application dans GitLab` : https://sentry.io/extensions/gitlab/setup/ et mettre comme nom d'application `Sentry`, laisser coché `Confidential` et `Read user` et Scopes `api` puis `Save application` pour valider le formulaire
 
 - Ne pas hésiter également à créer un faux incident pour valider l'installation 
 
-- ![img.png](assets/images/img_14.png)
+- ![Sentry Step 3](assets/images/sentry_step3.png)
 
 ### Configuration de SonarCloud
 - Se connecter à son compte SonarCloud
 - Connecter SonarCloud à GitLab CI/CD : https://docs.sonarsource.com/sonarcloud/getting-started/gitlab/
 - Suivre la connexion du projet SonarCloud à GitLab CI/CD : https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/gitlab-ci/
-- ❗ Attention, bien vérifier le contenu du fichier sonar-project.properties à la racine du projet : il doit correspondre aux informations du projet SonarCloud
+- ❗ Attention, bien vérifier le contenu du fichier `sonar-project.properties` à la racine du projet : il doit correspondre aux informations du projet SonarCloud
 
-![img_5.png](assets/images/img_17.png)
+![SonarCloud Info](assets/images/sonarcloud_info.png)
 
 ### Configuration de Heroku [Facultatif car plan payant mais prix dérisoire]
 - Se connecter à son compte Heroku
