@@ -90,7 +90,7 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
    
 
-2. Sur votre machine local, ne pas faire les tâches en tant que utilisateur `root` mais votre utilisateur `classique` : dans votre **Machine Linux WSL2** ou Terminal Linux sur MacOS ou Linux : vous positionner dans votre "HOME DIRECTORY"
+2. Sur votre machine local, ne pas faire les tâches en tant que utilisateur `root` mais avec votre utilisateur `classique` : dans votre **Machine Linux WSL2** ou Terminal Linux sur MacOS ou Linux : vous positionner dans votre "HOME DIRECTORY"
    - ❗ Attention, il est important de bien se placer dans son "~/monusername"
    - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse)
    - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
@@ -178,22 +178,22 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
 - ❗ Attention, à bien exécuter cette partie et lire ATTENTIVEMENT la documentation sous peine de ne pas réussir à connecter Sentry à GitLab CI/CD
 
-- ![img_3.png](img_3.png)
+- ![img_3.png](assets/images/img_15.png)
 
-- ![img_4.png](img_4.png)
+- ![img_4.png](assets/images/img_16.png)
 - 
 - ❗ Attention, Bien lire la doc de la "popup" qui explique les étapes préalables à la connexion de Sentry à GitLab CI/CD avant d'appuyer sur "Suivant" ou "Next" : si ce n'est pas lu, vous n'arriverez pas à établir la connexion entre Sentry et GitLab CI/CD.
 
 
 Bien penser à créer l'application dans Gitlab pour Sentry :
 
-- ![img_2.png](img_2.png)
+- ![img_2.png](assets/images/img_13.png)
 
 - ❗ Attention, bien utiliser l'url suivante pour dans la partie `Application dans GitLab` : https://sentry.io/extensions/gitlab/setup/ et mettre comme nom d'application `Sentry`, laisser coché `Confidential` et `Read user` et Scopes `api` puis `Save application` pour valider le formulaire
 
 - Ne pas hésiter également à créer un faux incident pour valider l'installation 
 
-- ![img.png](img.png)
+- ![img.png](assets/images/img_14.png)
 
 ### Configuration de SonarCloud
 - Se connecter à son compte SonarCloud
@@ -201,7 +201,7 @@ Bien penser à créer l'application dans Gitlab pour Sentry :
 - Suivre la connexion du projet SonarCloud à GitLab CI/CD : https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/gitlab-ci/
 - ❗ Attention, bien vérifier le contenu du fichier sonar-project.properties à la racine du projet : il doit correspondre aux informations du projet SonarCloud
 
-![img_5.png](img_5.png)
+![img_5.png](assets/images/img_17.png)
 
 ### Configuration de Heroku [Facultatif car plan payant mais prix dérisoire]
 - Se connecter à son compte Heroku
