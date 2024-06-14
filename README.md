@@ -164,9 +164,9 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
    - Laisser pour l'instant toutes les variables vides, elles seront renseignées plus tard.
      1. HEROKU_APP [Nom de l'application Heroku] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
-     2. HEROKU_PRODUCTION_KEY [Clé API Heroku] : **Visibility** : `Masked` | **Flags** : `Expand variable reference`
-     3. SONAR_TOKEN [Token SonarCloud] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
+     2. HEROKU_PRODUCTION_KEY [Clé API Heroku] : **Protected** : `Protected` | **Visibility** : `Masked` | **Flags** : `Expand variable reference`
      4. SONAR_HOST_URL [URL SonarCloud] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
+     3. SONAR_TOKEN [Token SonarCloud] : **Protected** : `Protected` | **Visibility** : `Masked` | **Flags** : `Expand variable reference`
 
    - La fonctionnalité de Pipeline CI/CD de GitLab est déjà activée par la présence du fichier **.gitlab-ci.yml** à la racine du projet.
 
