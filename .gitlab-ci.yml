@@ -63,7 +63,6 @@ lint-test-job:   # This job also runs in the test stage.
     - echo "No lint issues found."
 
 
-
 sonarcloud-check:
   stage: quality
   image:
@@ -80,8 +79,6 @@ sonarcloud-check:
     - main
     - master
     - develop
-
-
 
 
 heroku_deploy:
