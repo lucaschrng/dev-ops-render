@@ -1,41 +1,44 @@
 # SF5 Project CI/CD #
 
+
 ## 📝 Objectifs pédagogiques du projet
-- Montrer qu'une CI/CD est un processus qui permet d'automatiser les tâches de développement, de test et de déploiement d'une application.
-- Montrer que la qualité du code est une priorité dans le processus
-- Montrer que la surveillance des erreurs est une constante dans la démarche Agile
-- Montrer que l'automatisation des tâches est une priorité dans la démarche DevOps
-- L'objectif est de livrer une application de qualité en production en toute sécurité et surtout qui fonctionne
-- Appliquer l'esprit DevOps dans le processus de développement d'une application : communication entre les équipes, automatisation des tâches, surveillance des erreurs, etc.
+- Montrer qu'une CI/CD est un processus qui permet d'automatiser les tâches de développement, de tests et de déploiements d'une application.
+- Montrer que la qualité du code est une priorité dans le processus de développement d'une application en mode Agile : `tests unitaires, tests fonctionnels, tests de qualité de code, etc.`
+- Montrer que la surveillance des erreurs est une constante préoccupation dans la démarche Agile : traçabilité des erreurs, correction des erreurs, etc : création de tickets d'incidents (JIRA, GitLab, etc.)
+- Montrer que l'automatisation des tâches est une priorité dans la démarche DevOps (y compris en `local`) : automatisation des tests, automatisation des déploiements, automatisation des tâches répétitives, etc.
+- Montrer qu'il est impératif de livrer une application de qualité en Production (ou autre serveur `on line`) en toute sécurité et surtout qui fonctionne : l'application doit être testée, surveillée et corrigée en temps réel : pas de KO en Production.
+- Montrer l'importance d'appliquer l'esprit DevOps dans le processus de développement d'une application : communication entre les équipes, automatisation des tâches, surveillance des erreurs, etc.
 
 
 ## 📝 Objectifs techniques du projet
 - Mettre en place un pipeline CI/CD avec Gitlab CI/CD, SonarCloud, Sentry et `Heroku`.
-- Utiliser Docker pour isoler les applications et leurs dépendances.
-- Utiliser GitLab pour gérer les dépôts Git, les pipelines CI/CD, les issues, les merge requests, etc.
-- Utiliser SonarCloud pour détecter les bugs, les vulnérabilités et les codes en doublon dans le code source.
-- Utiliser Sentry pour surveiller et corriger les erreurs dans les applications en temps réel.
-- Utiliser `Heroku` pour déployer, gérer et mettre à l'échelle des applications : **[Facultatif car plan payant mais prix dérisoire]**
+- Installer une stack Docker pour faire fonctionner l'application Symfony 5.4 en local.
+- Utiliser GIT via GitLab pour gérer les dépôts Git, les pipelines CI/CD, les issues, les merge requests, etc.
+- Connecter SonarCloud à GitLab et l'utiliser comme outil d'analyse de code source pour détecter les bugs, les vulnérabilités et les codes en doublon dans le code source.
+- Connecter Sentry à GitLab et l'utiliser comme outil de surveillance centralisé des erreurs diverses qui peuvent survenir dans l'application.
+- Connecter `Heroku` à GitLab et l'utiliser comme plateforme PaaS pour déployer et `exposer` l'application en ligne : **[Facultatif car plan payant mais prix dérisoire]**
 
 
 ## 📝 Description du projet
-Application Symfony 5.4 Labo pour le projet CI/CD :
-L'objectif étant de mettre en place un pipeline CI/CD avec Gitlab CI/CD, SonarCloud, Sentry et `Heroku`.
+**Application Symfony 5.4 Labo pour le projet CI/CD :**
+L'objectif de ce projet est de mettre en place un pipeline CI/CD avec Gitlab CI/CD, SonarCloud, Sentry et `Heroku` d'une **vraie application** développée en `PHP 7.4` à l'aide du framework `Symfony 5.4`.
 Toute la stack Docker nécessaire pour faire fonctionner l'application est déjà prête et présente dans l'application.
-- ❗ **Afin de suivre ce README plus facilement je conseille vivement de laisser le nom du projet tel quel : `sf5-p3`**
+- ❗ **Afin de suivre ce README plus facilement IL EST VIVEMENT CONSEILLÉ de laisser le **nom du projet** tel quel, à savoir : `sf5-p3`**
+
 
 ##  📑Prérequis pour ce projet [Tous ces outils proposent des formules gratuites]
-- Installer Docker Desktop (wSL2 pour Windows | Docker natif pour Linux et MacOS)
+- Disposer de Docker Desktop (sous WSL2 pour Windows | Docker natif pour Linux et MacOS)
 - Disposer d'un compte GitLab (gestionnaire de sources centralisé)
 - Disposer d'un compte SonarCloud (analyse de code source)
 - Disposer d'un compte Sentry (surveillance des erreurs)
 - Disposer d'un compte `Heroku` (plateforme PaaS pour héberger en `Production` notre projet) : **[Facultatif car plan payant mais prix dérisoire]**
 - Disposer de Microsoft Authenticator pour la double authentification sur Heroku (ou tout autre outil de double authentification)
-- Disposer d'un IDE (VSCode, PHPStorm, etc.) : je conseille **VSCode** car il est gratuit et très complet, il faut y ajouter les outils pour faire du Dev PHP Symfony (PHP Intelephense, Symfony, etc.)
+- Disposer d'un IDE (IDE = Éditeur de Code), par exemple : VSCode, PHPStorm, Visual Studio : il est vivement conseillé **VSCode** car il est gratuit et très complet, il faut y ajouter les outils pour faire du Dev PHP Symfony (PHP Intelephense, Symfony, etc.), mais ce n'est pas obligatoire dans le cadre de ce projet.
 
-## 📑Description de la Stack Docker sf5-p3 (micro-services)
 
-Ce projet dispose d'une stack Docker composée de 8 services :
+## 📑Description de la Stack Docker sf5-p3 (Docker Compose)
+
+Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker Compose)
 
 - ![Docker Stack](assets/images/docker_start.png)
 
@@ -51,10 +54,10 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
 ##  📑Présentation des outils
 
-### Docker Desktop (wSL2 pour Windows | Docker natif pour Linux et MacOS)
+### Docker Desktop (WSL2 pour Windows | Docker natif pour Linux et MacOS)
 - 👉 Moteur permettant de créer des conteneurs Docker pour isoler des applications et leurs dépendances.
-- ❗ Attention, `docker CLI` doit être installé sur votre machine pour pouvoir exécuter les commandes Docker. vérifier avec la commande `docker -v` dans votre terminal.
-- 👉 Le résultat doit être quelque chose comme : `Docker version 2x.yy.z, build jldmkj` : Si `docker` ET docker CLI n'est pas installé, suivre la documentation officielle pour l'installer.
+- ❗ Attention, `docker CLI` doit être installé sur votre machine pour **pouvoir exécuter les commandes Docker**. vérifier avec la commande `docker -v` dans votre terminal.
+- 👉 Le résultat doit être quelque chose comme : `Docker version 2x.yy.z, build jldmkj` : Si `docker` n'est pas installé, suivre la documentation officielle pour l'installer sur votre poste.
 - ❗ Attention, dans ce cas là, il faut installer Docker Desktop pour Windows ou Docker natif pour Linux et MacOS (bien installer WSL2 pour Windows en prérequis) : https://docs.docker.com/desktop/wsl/
 
 - ![Docker Stack](assets/images/docker_start.png)
@@ -82,7 +85,8 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
 
 ## 📦 Installation
-1. Faire un fork de ce dépôt : bien forker le projet en projet avec une visibilité **public** : certain des `outils tiers`, utilisés dans ce projet, nécessitent une visibilité **publique** pour fonctionner.
+1. Faire un fork de ce dépôt : bien `forker` le projet en projet avec une visibilité **public** : 
+   - ❗ En effet, certain des `outils tiers`, utilisés dans ce projet, nécessitent une visibilité **publique** pour fonctionner **(du moins dans leurs versions gratuites)**
    - 👉 Le Fork va permettre de travailler sur une copie du projet original, sans modifier le projet original.
 
    - ![GitLab Fork step 1](assets/images/gitlab_fork_step1.png)
@@ -90,9 +94,9 @@ Ce projet dispose d'une stack Docker composée de 8 services :
 
    
 
-2. Sur votre machine local, ne pas faire les tâches en tant que utilisateur `root` mais avec votre utilisateur `classique` : dans votre **Machine Linux WSL2** ou Terminal Linux sur MacOS ou Linux : vous positionner dans votre "HOME DIRECTORY"
-   - ❗ Attention, il est important de bien se placer dans son "~/monusername"
-   - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse)
+2. Sur votre machine locale, il est important de ne pas faire les tâches en tant que utilisateur `root` mais plutôt avec votre utilisateur `classique` : dans votre **Machine Linux WSL2** ou Terminal Linux sur MacOS ou Linux : vous positionner dans votre `HOME DIRECTORY`
+   - ❗ Attention, il est important de bien se placer dans son "~/<_**monusername**_>"
+   - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse, ici en minuscules) :
    - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
    - Donner les droits `755` ou `777` au répertoire `sf5-p3` pour éviter les problèmes de permissions : 
      - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour ceux et celles que ça intéresse : 
@@ -102,73 +106,75 @@ Ce projet dispose d'une stack Docker composée de 8 services :
     ```bash
     sudo chmod -R 777 ~/www/sf5-p3
     ```
-   - une fois les droits corrects mis en place, se déplacer dans le dossier en question afin d'y clôner le projet :
+   - une fois les droits corrects mis en place, vous déplacer dans le dossier en question afin d'y cloner le projet :
     ```bash
     cd sf5-p3
     ```
 
 
 
-3. Puis cloner le dépôt en local sur votre machine (en partant du lien `clone with HTTPS` depuis la branche ```master```.
+3. Puis clonez le dépôt en local sur votre machine (en partant bien du lien `clone with HTTPS` depuis la branche ```master```.
    - 👉 Le clone va permettre de récupérer le projet sur votre machine locale et surtout d'initialiser le dépôt Git local.
    - ❗ Attention, il est important de cloner le projet depuis votre fork et non depuis le projet original.
 
    - ![GitLab clone](assets/images/gitlab_clone.png)
-   - 👉 Dans votre terminal, exécuter la commande suivante :
+   - 👉 Dans votre terminal, exécutez la commande suivante :
 
    ```bash
    git clone https://gitlab.com/<votre-groupe-si-besoin>/<votre-propre-repo-forked>/sf5-p3.git
    ```
 
-   Une fois le projet cloné, se placer à la racine du projet, ouvrir un terminal puis lancer la commande suivante :
-   - ❗ Attention il ne s'agit pas d'une commande Docker officielle, mais d'une commande customisée pour ce projet.
+   Une fois le projet cloné, se placer à la racine du projet, on va maintenant démarrer les machines Dockers pour faire fonctionner l'application Symfony en local.
+   - ❗ Attention il ne s'agit pas d'une commande **Docker officielle**, mais d'une `commande custom` pour ce projet.
    ```bash
    ./start-sf5.sh
    ```
 
-   Une fois les machines Dockers démarrées, entrer dans le container PHP pour disposer de la console PHP :
-   - ❗ Attention il ne s'agit pas d'une commande Docker officielle, mais d'une commande customisée pour ce projet.
+   Une fois les machines Dockers démarrées, entrez dans le container PHP pour disposer de la console PHP :
+   - ❗ Attention il ne s'agit pas d'une commande **Docker officielle**, mais d'une `commande custom` pour ce projet.
    ```bash
    ./run_sf5_php
    ```
 
-   Toujours dans ce même conteneur PHP : Dupliquer le fichier `.env.local.dist` vers `.env.local`
+   Toujours dans ce même conteneur PHP : Dupliquez le fichier `.env.local.dist` vers `.env.local`
    ```bash
    cp -p .env.local.dist .env.local
    ```
 
-   Une fois dans le container PHP, installer l'application en local avec composer (le gestionnaire de dépendances PHP):
+   Une fois dans le container PHP, installez l'application en local avec composer (le gestionnaire de dépendances PHP):
+   Il s'agit d'une commande liée au projet PHP. À savoir : `composer` est le principal gestionnaire de dépendances (ou `packages`) PHP : cette commande va installer toutes les dépendances nécessaires pour faire fonctionner l'application Symfony.
+   Pour celles et ceux que cela intéresse, voici le `site officiel de Composer` : https://getcomposer.org
    ```bash
    composer install
    ```
 
 
-   Toujours dans ce même conteneur PHP : Jouer les migrations pour `peupler` la base de données
-   - 👉 Cette commande va créer la base de données et les tables nécessaires pour le projet et la remplir avec des données tests
+   Toujours dans ce même conteneur PHP : Jouez les migrations pour `peupler` la base de données
+   - 👉 Cette commande va créer la base de données et les tables nécessaires pour faire fonctionner le projet : il va remplir des données "bidons"
    - Cette commande vient du fichier `composer.json` et est une commande personnalisée dans la section `scripts`
    ```bash
    composer compile
    ```
-    - ❗ Attention, cette commande va créer la base de données et les tables nécessaires pour le projet et la remplir avec des données tests, donc le container `db` doit être bien démarré pour que cela fonctionne.
+   - ❗ Attention, cette commande va créer la base de données et les tables nécessaires pour le projet et la remplir avec des données tests, donc le container Docker qui a comme nom de service `db` doit être en fonctionnement pour que cela fonctionne.
 
 
 ## ⚙️Configuration des outils TIERS
 
 ### Configuration de GitLab CI/CD
 
-
-1. Permettre à GitLab de se connecter à Sentry, Heroku et SonarCloud dans le cadre de la Pipeline CI/CD.
-   - ❗ Attention, ce projet doit avoir été forké en projet `public` pour que les outils tiers puissent se connecter à GitLab. Penser le cas échéant à vérifier la visibilité du groupe parent si nécessaire, lui aussi doit être en `public`.
-   - Se connecter à son compte GitLab, puis aller dans votre projet, puis dans `Settings` > `CI/CD` > `Variables` et ajouter les variables suivantes :
+----------------------------------xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+1. Permettre à GitLab de se connecter à Sentry, Heroku et SonarCloud et d'être déclenchés par la Pipeline CI/CD.
+   - ❗ Attention, ce projet doit avoir été forké en projet `public` pour que les outils tiers puissent se connecter à GitLab. Pensez, le cas échéant, à vérifier la visibilité du groupe parent si nécessaire, lui aussi doit être en `public`.
+   - Se connecter à son compte GitLab, puis allez dans votre projet, puis dans `Settings` > `CI/CD` > `Variables` et ajoutez les variables suivantes :
    - ![Gitlab Variables](assets/images/gitlab_variables.png)
 
-   - Laisser pour l'instant toutes les variables vides, elles seront renseignées plus tard.
+   - Laissez pour l'instant toutes les `valeurs` des variables vides, elles seront renseignées plus tard.
      1. HEROKU_APP [Nom de l'application Heroku] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
      2. HEROKU_PRODUCTION_KEY [Clé API Heroku] : **Protected** : `Protected` | **Visibility** : `Masked` | **Flags** : `Expand variable reference`
      4. SONAR_HOST_URL [URL SonarCloud] : **Visibility** : `Visible` | **Flags** : `Expand variable reference`
      3. SONAR_TOKEN [Token SonarCloud] : **Protected** : `Protected` | **Visibility** : `Masked` | **Flags** : `Expand variable reference`
 
-   - La fonctionnalité de Pipeline CI/CD de GitLab est déjà activée par la présence du fichier **.gitlab-ci.yml** à la racine du projet.
+   - La fonctionnalité de Pipeline CI/CD de GitLab est déjà activée par la présence du fichier **.gitlab-ci.yml** à la racine du projet, il n'y a donc pas besoin de l'activer dans GitLab.
 
 ### Configuration de Sentry
 - Se connecter à son compte Sentry
