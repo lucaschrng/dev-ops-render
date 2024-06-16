@@ -121,7 +121,7 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    - 👉 Dans votre terminal, exécutez la commande suivante :
 
    ```bash
-   git clone https://gitlab.com/<votre-groupe-si-besoin>/<votre-propre-repo-forked>/sf5-p3.git
+   git clone https://gitlab.com/<votre-groupe-si-besoin>/sf5-p3.git
    ```
 
    Une fois le projet cloné, se placer à la racine du projet, on va maintenant démarrer les machines Dockers pour faire fonctionner l'application Symfony en local.
