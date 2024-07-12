@@ -1,1 +1,1 @@
-FROM nginx:alpine
+FROM phpmyadmin/phpmyadmin

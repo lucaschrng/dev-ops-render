@@ -10,10 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends AbstractController
 {
-	/**
-	 * @Route("/comments/{id}/vote/{direction<up|down>}", methods="POST")
-	 * @throws RandomException
-	 */
+    /**
+     * @Route("/comments/{id}/vote/{direction<up|down>}", methods="POST")
+     * @throws RandomException
+     */
     public function commentVote($id, $direction, LoggerInterface $logger)
     {
         // todo - use id to query the database

@@ -99,7 +99,7 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse, ici en minuscules) :
    - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
    - Donner les droits `755` ou `777` au répertoire `sf5-p3` pour éviter les problèmes de permissions : 
-     - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour ceux et celles que ça intéresse : 
+     - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour celles et ceux que ça intéresse : 
        - https://doc.ubuntu-fr.org/permissions
        - https://www.tutos.eu/8869
        
@@ -157,6 +157,11 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    ```
    - ❗ Attention, cette commande va créer la base de données et les tables nécessaires pour le projet et la remplir avec des données tests, donc le container Docker qui a comme nom de service `db` doit être en fonctionnement pour que cela fonctionne.
 
+4. Pour vérifier que l'application fonctionne correctement, ouvrez un navigateur et tapez l'URL suivante : `http://localhost:2010` : vous devriez voir la page d'accueil de l'application Symfony.
+   
+   - ❗ Attention, il est important de bien respecter le port `2010` pour accéder à l'application Symfony.
+   
+   - ![Symfony Home](assets/images/localhost_home.png)
 
 ## ⚙️Configuration des outils TIERS
 
