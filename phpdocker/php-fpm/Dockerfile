@@ -6,30 +6,30 @@ RUN apt-get update \
     vim curl wget yarn npm nodejs apt-utils \
         build-essential locales acl mailutils wget zip unzip yarn npm nodejs iputils-ping ca-certificates \
         gnupg gnupg1 gnupg2 libzip-dev zlib1g-dev libicu-dev g++ libpng-dev libjpeg-dev libfreetype6-dev \
-#        php8.1-bcmath \
-#        php8.1-bz2 \
-#        php8.1-raphf \
-#        php8.1-http \
-#        php8.1-gd \
-#        php8.1-gmp \
-#        php8.1-http \
-#        php8.1-imap \
-#        php8.1-inotify \
+        php8.1-bcmath \
+        php8.1-bz2 \
+        php8.1-raphf \
+        php8.1-http \
+        php8.1-gd \
+        php8.1-gmp \
+        php8.1-http \
+        php8.1-imap \
+        php8.1-inotify \
         php8.1-intl \
-#        php8.1-mailparse \
-#        php8.1-mcrypt \
+        php8.1-mailparse \
+        php8.1-mcrypt \
         php8.1-memcache \
-#        php8.1-memcached \
-#        php8.1-msgpack \
+        php8.1-memcached \
+        php8.1-msgpack \
         php8.1-mysql \
         php8.1-redis \
-#        php8.1-soap \
-#        php8.1-solr \
-#        php8.1-ssh2 \
+        php8.1-soap \
+        php8.1-solr \
+        php8.1-ssh2 \
         php8.1-uuid \
-#        php8.1-xdebug \
-#        php8.1-xmlrpc \
-#        php8.1-xsl \
+        php8.1-xdebug \
+        php8.1-xmlrpc \
+        php8.1-xsl \
         php8.1-yaml \
         php8.1-zip \
     && apt-get clean \
