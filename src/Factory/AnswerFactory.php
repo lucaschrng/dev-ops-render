@@ -11,48 +11,68 @@ use Zenstruck\Foundry\RepositoryProxy;
 /**
  * @extends ModelFactory<Answer>
  *
- * @method static Answer|Proxy createOne(array $attributes = [])
- * @method static Answer[]|Proxy[] createMany(int $number, array|callable $attributes = [])
- * @method static Answer[]|Proxy[] createSequence(array|callable $sequence)
- * @method static Answer|Proxy find(object|array|mixed $criteria)
- * @method static Answer|Proxy findOrCreate(array $attributes)
- * @method static Answer|Proxy first(string $sortedField = 'id')
- * @method static Answer|Proxy last(string $sortedField = 'id')
- * @method static Answer|Proxy random(array $attributes = [])
- * @method static Answer|Proxy randomOrCreate(array $attributes = [])
- * @method static Answer[]|Proxy[] all()
- * @method static Answer[]|Proxy[] findBy(array $attributes)
- * @method static Answer[]|Proxy[] randomSet(int $number, array $attributes = [])
- * @method static Answer[]|Proxy[] randomRange(int $min, int $max, array $attributes = [])
+ * @method        Answer|Proxy                     create(array|callable $attributes = [])
+ * @method static Answer|Proxy                     createOne(array $attributes = [])
+ * @method static Answer|Proxy                     find(object|array|mixed $criteria)
+ * @method static Answer|Proxy                     findOrCreate(array $attributes)
+ * @method static Answer|Proxy                     first(string $sortedField = 'id')
+ * @method static Answer|Proxy                     last(string $sortedField = 'id')
+ * @method static Answer|Proxy                     random(array $attributes = [])
+ * @method static Answer|Proxy                     randomOrCreate(array $attributes = [])
  * @method static AnswerRepository|RepositoryProxy repository()
- * @method Answer|Proxy create(array|callable $attributes = [])
+ * @method static Answer[]|Proxy[]                 all()
+ * @method static Answer[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
+ * @method static Answer[]|Proxy[]                 createSequence(iterable|callable $sequence)
+ * @method static Answer[]|Proxy[]                 findBy(array $attributes)
+ * @method static Answer[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
+ * @method static Answer[]|Proxy[]                 randomSet(int $number, array $attributes = [])
+ *
+ * @phpstan-method        Proxy<Answer> create(array|callable $attributes = [])
+ * @phpstan-method static Proxy<Answer> createOne(array $attributes = [])
+ * @phpstan-method static Proxy<Answer> find(object|array|mixed $criteria)
+ * @phpstan-method static Proxy<Answer> findOrCreate(array $attributes)
+ * @phpstan-method static Proxy<Answer> first(string $sortedField = 'id')
+ * @phpstan-method static Proxy<Answer> last(string $sortedField = 'id')
+ * @phpstan-method static Proxy<Answer> random(array $attributes = [])
+ * @phpstan-method static Proxy<Answer> randomOrCreate(array $attributes = [])
+ * @phpstan-method static RepositoryProxy<Answer> repository()
+ * @phpstan-method static list<Proxy<Answer>> all()
+
  */
 final class AnswerFactory extends ModelFactory
 {
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
+     *
+     * @todo inject services if required
+     */
     public function __construct()
     {
         parent::__construct();
-
-        // TODO inject services if required (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services)
     }
 
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
+     *
+     * @todo add your default values here
+     */
     protected function getDefaults(): array
     {
         return [
-            // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'content' => self::faker()->text(),
-            'username' => self::faker()->text(),
-            'votes' => self::faker()->randomNumber(),
-            'createdAt' => null,
-            // TODO add DATETIME ORM type manually
-            'updatedAt' => null,
-            // TODO add DATETIME ORM type manually
+            'createdAt' => self::faker()->dateTimeBetween('-3 month'),
+            'updatedAt' => self::faker()->dateTime(),
+	        'username' => self::faker()->userName(),
+	        'votes' => self::faker()->numberBetween(-20, 50),
+	        'question' => QuestionFactory::new()->unpublished(),
         ];
     }
 
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
+     */
     protected function initialize(): self
     {
-        // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
             // ->afterInstantiate(function(Answer $answer): void {})
         ;

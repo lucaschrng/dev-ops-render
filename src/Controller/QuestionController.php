@@ -72,11 +72,11 @@ EOF);
 
         return new Response(
             sprintf(
-          'Well hallo! The shiny new question is id #%d, %s, and votes: %d',
-          $question->getId(),
-          $question->getSlug(),
-          $question->getVotes()
-      )
+                'Well hallo! The shiny new question is id #%d, %s, and votes: %d',
+                $question->getId(),
+                $question->getSlug(),
+                $question->getVotes()
+            )
         );
     }
 
