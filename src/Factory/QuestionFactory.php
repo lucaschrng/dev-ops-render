@@ -9,43 +9,73 @@ use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
 /**
- * @method static Question|Proxy findOrCreate(array $attributes)
- * @method static Question|Proxy random()
- * @method static Question[]|Proxy[] randomSet(int $number)
- * @method static Question[]|Proxy[] randomRange(int $min, int $max)
+ * @extends ModelFactory<Question>
+ *
+ * @method        Question|Proxy                     create(array|callable $attributes = [])
+ * @method static Question|Proxy                     createOne(array $attributes = [])
+ * @method static Question|Proxy                     find(object|array|mixed $criteria)
+ * @method static Question|Proxy                     findOrCreate(array $attributes)
+ * @method static Question|Proxy                     first(string $sortedField = 'id')
+ * @method static Question|Proxy                     last(string $sortedField = 'id')
+ * @method static Question|Proxy                     random(array $attributes = [])
+ * @method static Question|Proxy                     randomOrCreate(array $attributes = [])
  * @method static QuestionRepository|RepositoryProxy repository()
- * @method Question|Proxy create($attributes = [])
- * @method Question[]|Proxy[] createMany(int $number, $attributes = [])
+ * @method static Question[]|Proxy[]                 all()
+ * @method static Question[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
+ * @method static Question[]|Proxy[]                 createSequence(iterable|callable $sequence)
+ * @method static Question[]|Proxy[]                 findBy(array $attributes)
+ * @method static Question[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
+ * @method static Question[]|Proxy[]                 randomSet(int $number, array $attributes = [])
+ *
+ * @phpstan-method        Proxy<Question> create(array|callable $attributes = [])
+ * @phpstan-method static Proxy<Question> createOne(array $attributes = [])
+ * @phpstan-method static Proxy<Question> find(object|array|mixed $criteria)
+ * @phpstan-method static Proxy<Question> findOrCreate(array $attributes)
+ * @phpstan-method static Proxy<Question> first(string $sortedField = 'id')
+ * @phpstan-method static Proxy<Question> last(string $sortedField = 'id')
+ * @phpstan-method static Proxy<Question> random(array $attributes = [])
+ * @phpstan-method static Proxy<Question> randomOrCreate(array $attributes = [])
+ * @phpstan-method static RepositoryProxy<Question> repository()
+ * @phpstan-method static list<Proxy<Question>> all()
  */
 final class QuestionFactory extends ModelFactory
 {
-    public function unpublished(): self
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
+     *
+     * @todo inject services if required
+     */
+    public function __construct()
     {
-        return $this->addState([
-            'askedAt' => null,
-        ]);
+        parent::__construct();
     }
 
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
+     *
+     * @todo add your default values here
+     */
     protected function getDefaults(): array
     {
         return [
-            'slug' => self::faker()->slug(10, true),
-            'name' => self::faker()->realText(50),
-            'question' => self::faker()->paragraphs(
-                self::faker()->numberBetween(1, 4),
-                true
-            ),
-            'askedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
-            'votes' => random_int(-20, 50),
+            'askedAt' => self::faker()->dateTime(),
+            'createdAt' => self::faker()->dateTime(),
+            'name' => self::faker()->text(255),
+            'slug' => self::faker()->text(255),
+	        'updatedAt' => self::faker()->dateTime(),
+	        'votes' => self::faker()->randomNumber(),
+	        'question' => QuestionFactory::random(),
         ];
     }
 
+    /**
+     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
+     */
     protected function initialize(): self
     {
-        // see https://github.com/zenstruck/foundry#initialization
         return $this
-   //->afterInstantiate(function(Question $question) { });
-   ;
+            // ->afterInstantiate(function(Question $question): void {})
+        ;
     }
 
     protected static function getClass(): string

@@ -4,21 +4,21 @@
 services:
     memcached:
         container_name: sf5-p3-memcached
-        image: 'memcached:alpine'
+        image : donbrico/memcached:v1.0.0
 
     mailhog:
         container_name: sf5-p3-mailhog
-        image: 'mailhog/mailhog:latest'
+        image : donbrico/mailhog:v1.0.0
         ports:
             - '2011:8025'
 
     redis:
         container_name: sf5-p3-redis
-        image: 'redis:alpine'
+        image : donbrico/redis-alpine:v1.0.0
 
     database:
         container_name: sf5-p3-db
-        image : donbrico/mysql-80-debian:v1.0.0
+        image : donbrico/mysql-80-debian:v1.1.0
         working_dir: /application
         volumes:
             - ./.docker/data/db:/var/lib/mysql
@@ -36,7 +36,7 @@ services:
 
     webserver:
         container_name: sf5-p3-web
-        image: 'nginx:alpine'
+        image : donbrico/nginx-alpine:v1.0.0
         working_dir: /application
         volumes:
             - '.:/application'
@@ -46,15 +46,15 @@ services:
 
     php-fpm:
         container_name: sf5-p3-php
-        build: phpdocker/php-fpm
+        image : donbrico/php-fpm-81:v1.0.0
         working_dir: /application
         volumes:
             - '.:/application'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
 
     node:
-        build: phpdocker/node
         container_name: sf5-p3-node
+        image : donbrico/node-14:v1.0.0
         volumes:
             - .:/home/wwwroot/sf5-p3
         command: bash -c "yarn && yarn dev --watch"
@@ -62,7 +62,7 @@ services:
             - php-fpm
 
     phpmyadmin:
-        image: phpmyadmin/phpmyadmin
+        image: donbrico/phpmyadmin:v1.0.0
         container_name: sf5-p3-phpmyadmin
         environment:
             PMA_HOST: database

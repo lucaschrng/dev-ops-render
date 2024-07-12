@@ -16,7 +16,7 @@
 - Utiliser GIT via GitLab pour gérer les dépôts Git, les pipelines CI/CD, les issues, les merge requests, etc.
 - Connecter SonarCloud à GitLab et l'utiliser comme outil d'analyse de code source pour détecter les bugs, les vulnérabilités et les codes en doublon dans le code source.
 - Connecter Sentry à GitLab et l'utiliser comme outil de surveillance centralisé des erreurs diverses qui peuvent survenir dans l'application.
-- Connecter `Heroku` à GitLab et l'utiliser comme plateforme PaaS pour déployer et `exposer` l'application en ligne : **[Facultatif car plan payant mais prix dérisoire]**
+- Connecter `Heroku` à GitLab et l'utiliser comme plateforme PaaS pour déployer et `exposer` l'application en ligne : **[Facultatif car plan payant mais prix dérisoires]**
 
 
 ## 📝 Description du projet
@@ -31,7 +31,7 @@ Toute la stack Docker nécessaire pour faire fonctionner l'application est déj�
 - Disposer d'un compte GitLab (gestionnaire de sources centralisé)
 - Disposer d'un compte SonarCloud (analyse de code source)
 - Disposer d'un compte Sentry (surveillance des erreurs)
-- Disposer d'un compte `Heroku` (plateforme PaaS pour héberger en `Production` notre projet) : **[Facultatif car plan payant mais prix dérisoire]**
+- Disposer d'un compte `Heroku` (plateforme PaaS pour héberger en `Production` notre projet) : **[Facultatif car plan payant mais prix dérisoires]**
 - Disposer de Microsoft Authenticator pour la double authentification sur Heroku (ou tout autre outil de double authentification)
 - Disposer d'un IDE (IDE = Éditeur de Code), par exemple : VSCode, PHPStorm, Visual Studio : il est vivement conseillé **VSCode** car il est gratuit et très complet, il faut y ajouter les outils pour faire du Dev PHP Symfony (PHP Intelephense, Symfony, etc.), mais ce n'est pas obligatoire dans le cadre de ce projet.
 
@@ -99,7 +99,7 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse, ici en minuscules) :
    - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
    - Donner les droits `755` ou `777` au répertoire `sf5-p3` pour éviter les problèmes de permissions : 
-     - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour ceux et celles que ça intéresse : 
+     - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour celles et ceux que ça intéresse : 
        - https://doc.ubuntu-fr.org/permissions
        - https://www.tutos.eu/8869
        
@@ -157,12 +157,17 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    ```
    - ❗ Attention, cette commande va créer la base de données et les tables nécessaires pour le projet et la remplir avec des données tests, donc le container Docker qui a comme nom de service `db` doit être en fonctionnement pour que cela fonctionne.
 
+4. Pour vérifier que l'application fonctionne correctement, ouvrez un navigateur et tapez l'URL suivante : `http://localhost:2010` : vous devriez voir la page d'accueil de l'application Symfony.
+   
+   - ❗ Attention, il est important de bien respecter le port `2010` pour accéder à l'application Symfony.
+   
+   - ![Symfony Home](assets/images/localhost_home.png)
 
 ## ⚙️Configuration des outils TIERS
 
 ### Configuration de GitLab CI/CD
 
-----------------------------------xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 1. Permettre à GitLab de se connecter à Sentry, Heroku et SonarCloud et d'être déclenchés par la Pipeline CI/CD.
    - ❗ Attention, ce projet doit avoir été forké en projet `public` pour que les outils tiers puissent se connecter à GitLab. Pensez, le cas échéant, à vérifier la visibilité du groupe parent si nécessaire, lui aussi doit être en `public`.
    - Se connecter à son compte GitLab, puis allez dans votre projet, puis dans `Settings` > `CI/CD` > `Variables` et ajoutez les variables suivantes :
@@ -213,7 +218,7 @@ Bien penser à créer l'application dans Gitlab pour Sentry :
 
 ![SonarCloud Info](assets/images/sonarcloud_info.png)
 
-### Configuration de Heroku [Facultatif car plan payant mais prix dérisoire]
+### Configuration de Heroku [Facultatif car plan payant mais prix dérisoires]
 - Se connecter à son compte Heroku
 - Créer une nouvelle application Heroku : `sf5-p3` pour la région `Europe`, avec le buildpack `heroku/php`, `nodejs`
 - Suivre la documentation pour déployer un projet Symfony sur Heroku : https://devcenter.heroku.com/articles/deploying-symfony4
