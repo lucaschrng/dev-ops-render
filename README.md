@@ -23,7 +23,7 @@
 **Application Symfony 5.4 Labo pour le projet CI/CD :**
 L'objectif de ce projet est de mettre en place un pipeline CI/CD avec Gitlab CI/CD, SonarCloud, Sentry et `Heroku` d'une **vraie application** développée en `PHP 7.4` à l'aide du framework `Symfony 5.4`.
 Toute la stack Docker nécessaire pour faire fonctionner l'application est déjà prête et présente dans l'application.
-- ❗ **Afin de suivre ce README plus facilement IL EST VIVEMENT CONSEILLÉ de laisser le **nom du projet** tel quel, à savoir : `sf5-p3`**
+- ❗ **Afin de suivre ce README plus facilement IL EST VIVEMENT CONSEILLÉ de laisser le **nom du projet** tel quel, à savoir : `sf5-ci-cd-lab`**
 
 
 ##  📑Prérequis pour ce projet [Tous ces outils proposent des formules gratuites]
@@ -36,20 +36,20 @@ Toute la stack Docker nécessaire pour faire fonctionner l'application est déj�
 - Disposer d'un IDE (IDE = Éditeur de Code), par exemple : VSCode, PHPStorm, Visual Studio : il est vivement conseillé **VSCode** car il est gratuit et très complet, il faut y ajouter les outils pour faire du Dev PHP Symfony (PHP Intelephense, Symfony, etc.), mais ce n'est pas obligatoire dans le cadre de ce projet.
 
 
-## 📑Description de la Stack Docker sf5-p3 (Docker Compose)
+## 📑Description de la Stack Docker sf5-ci-cd-lab (Docker Compose)
 
 Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker Compose)
 
 - ![Docker Stack](assets/images/docker_start.png)
 
-- redis [sf5-p3-redis] : service de cache en mémoire dans une BDD NoSql
-- db [sf5-p3-db] : service de base de données sur moteur MySQL
-- web [sf5-p3-web] : service de serveur web pour exposer l'application Symfony
-- memcached [sf5-p3-memcached] : service de cache en mémoire
-- mailhog [sf5-p3-mailhog] : service de serveur SMTP pour intercepter les mails envoyés par l'application
-- php [sf5-p3-php] : service PHP pour exécuter les commandes Symfony (Symfony v5.4, PHP 8.1, composer 2)
-- node [sf5-p3-node] : service pour compiler les assets CSS/JS
-- phpmyadmin [sf5-p3-phpmyadmin] : service de gestion de la base de données MySQL
+- redis [sf5-ci-cd-redis] : service de cache en mémoire dans une BDD NoSql
+- db [sf5-ci-cd-db] : service de base de données sur moteur MySQL
+- web [sf5-ci-cd-web] : service de serveur web pour exposer l'application Symfony
+- memcached [sf5-ci-cd-memcached] : service de cache en mémoire
+- mailhog [sf5-ci-cd-mailhog] : service de serveur SMTP pour intercepter les mails envoyés par l'application
+- php [sf5-ci-cd-php] : service PHP pour exécuter les commandes Symfony (Symfony v5.4, PHP 8.1, composer 2)
+- node [sf5-ci-cd-node] : service pour compiler les assets CSS/JS
+- phpmyadmin [sf5-ci-cd-phpmyadmin] : service de gestion de la base de données MySQL
 
 
 ##  📑Présentation des outils
@@ -97,18 +97,18 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
 2. Sur votre machine locale, il est important de ne pas faire les tâches en tant que utilisateur `root` mais plutôt avec votre utilisateur `classique` : dans votre **Machine Linux WSL2** ou Terminal Linux sur MacOS ou Linux : vous positionner dans votre `HOME DIRECTORY`
    - ❗ Attention, il est important de bien se placer dans son "~/<_**monusername**_>"
    - Une fois dans son **home directory** : créer le répertoire `www` (attention, il est important de bien respecter la casse, ici en minuscules) :
-   - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-p3`**
-   - Donner les droits `755` ou `777` au répertoire `sf5-p3` pour éviter les problèmes de permissions : 
+   - Puis se placer dans le répertoire `www` et cloner le projet depuis votre fork : **votre projet se trouvera dans `~/www/sf5-ci-cd-lab`**
+   - Donner les droits `755` ou `777` au répertoire `sf5-ci-cd-lab` pour éviter les problèmes de permissions : 
      - 👉 Petit rappel pour comprendre **les droits sous Linux**, pour celles et ceux que ça intéresse : 
        - https://doc.ubuntu-fr.org/permissions
        - https://www.tutos.eu/8869
        
     ```bash
-    sudo chmod -R 777 ~/www/sf5-p3
+    sudo chmod -R 777 ~/www/sf5-ci-cd-lab
     ```
    - une fois les droits corrects mis en place, vous déplacer dans le dossier en question afin d'y cloner le projet :
     ```bash
-    cd sf5-p3
+    cd sf5-ci-cd-lab
     ```
 
 
@@ -121,7 +121,7 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
    - 👉 Dans votre terminal, exécutez la commande suivante :
 
    ```bash
-   git clone https://gitlab.com/<votre-groupe-si-besoin>/sf5-p3.git
+   git clone https://gitlab.com/<votre-groupe-si-besoin>/sf5-ci-cd-lab.git
    ```
 
    Une fois le projet cloné, se placer à la racine du projet, on va maintenant démarrer les machines Dockers pour faire fonctionner l'application Symfony en local.
@@ -183,8 +183,8 @@ Ce projet dispose d'une stack Docker composée de 8 services (grâce à Docker C
 
 ### Configuration de Sentry
 - Se connecter à son compte Sentry
-- créer un nouveau projet **sf5-p3** basé sur la plateforme `PHP`, laisser`**Set your alert frequency**` à la valeur par défaut (`Alert me on every new issue`)
-- puis mettre comme **Project name** : `sf5-p3` et laisser **Team** tel quel puis cliquez sur le bouton **Create Project"**
+- créer un nouveau projet **sf5-ci-cd-lab** basé sur la plateforme `PHP`, laisser`**Set your alert frequency**` à la valeur par défaut (`Alert me on every new issue`)
+- puis mettre comme **Project name** : `sf5-ci-cd-lab` et laisser **Team** tel quel puis cliquez sur le bouton **Create Project"**
 - dans la section **Configure your SDK**, copier la clé DSN : `https://3cxxxxxxxxxxxxxxxxxx3e@yyyyyyy.ingest.us.sentry.io/zzzzzzzzzzzzzzzz`
 - Coller cette clef DSN dans le fichier `.env.local` à la racine du projet, pour la valeur de la variable `SENTRY_DSN`
 - La section **Verify** est déjà existante dans le projet dans `src/Controller/SentryTestController.php`
@@ -220,9 +220,9 @@ Bien penser à créer l'application dans Gitlab pour Sentry :
 
 ### Configuration de Heroku [Facultatif car plan payant mais prix dérisoires]
 - Se connecter à son compte Heroku
-- Créer une nouvelle application Heroku : `sf5-p3` pour la région `Europe`, avec le buildpack `heroku/php`, `nodejs`
+- Créer une nouvelle application Heroku : `sf5-ci-cd-lab` pour la région `Europe`, avec le buildpack `heroku/php`, `nodejs`
 - Suivre la documentation pour déployer un projet Symfony sur Heroku : https://devcenter.heroku.com/articles/deploying-symfony4
-- ❗ Attention, ne pas utiliser `sf5-p3` car cette dernière est déjà utilisée pour le projet (et oui par moi-même 😜), utiliser un autre nom pour l'application Heroku
+- ❗ Attention, ne pas utiliser `sf5-ci-cd-lab` car cette dernière est déjà utilisée pour le projet (et oui par moi-même 😜), utiliser un autre nom pour l'application Heroku
 
 
 ## 📑  HomeWorks [Travaux notés]
