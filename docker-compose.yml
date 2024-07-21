@@ -3,21 +3,21 @@
 ###############################################################################
 services:
     memcached:
-        container_name: sf5-p3-memcached
+        container_name: sf5-p4-memcached
         image : donbrico/memcached:v1.0.0
 
     mailhog:
-        container_name: sf5-p3-mailhog
+        container_name: sf5-p4-mailhog
         image : donbrico/mailhog:v1.0.0
         ports:
             - '2011:8025'
 
     redis:
-        container_name: sf5-p3-redis
+        container_name: sf5-p4-redis
         image : donbrico/redis-alpine:v1.0.0
 
     database:
-        container_name: sf5-p3-db
+        container_name: sf5-p4-db
         image : donbrico/mysql-80-debian:v1.1.0
         working_dir: /application
         volumes:
@@ -28,14 +28,14 @@ services:
         environment:
             MYSQL_ROOT_USER: root
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: db-sf5-p3
+            MYSQL_DATABASE: db-sf5-p4
             MYSQL_PASSWORD: root
         ports:
             - "2012:3306"
         tty: true
 
     webserver:
-        container_name: sf5-p3-web
+        container_name: sf5-p4-web
         image : donbrico/nginx-alpine:v1.0.0
         working_dir: /application
         volumes:
@@ -45,7 +45,7 @@ services:
             - '2010:80'
 
     php-fpm:
-        container_name: sf5-p3-php
+        container_name: sf5-p4-php
         image : donbrico/php-fpm-81:v1.0.0
         working_dir: /application
         volumes:
@@ -53,17 +53,18 @@ services:
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
 
     node:
-        container_name: sf5-p3-node
-        image : donbrico/node-14:v1.0.0
+        container_name: sf5-p4-node
+        image : donbrico/node-14:v1.1.0
+        working_dir: /home/wwwroot/sf5-p4
         volumes:
-            - .:/home/wwwroot/sf5-p3
+            - .:/home/wwwroot/sf5-p4
         command: bash -c "yarn && yarn dev --watch"
         depends_on:
             - php-fpm
 
     phpmyadmin:
         image: donbrico/phpmyadmin:v1.0.0
-        container_name: sf5-p3-phpmyadmin
+        container_name: sf5-p4-phpmyadmin
         environment:
             PMA_HOST: database
             PMA_PORT: 3306

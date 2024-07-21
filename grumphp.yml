@@ -1,0 +1,2 @@
+grumphp:
+    tasks: { behat: null, composer: null, composer_script: null, git_blacklist: null, phpcs: null, phpcsfixer: null, phpstan: null, psalm: null, securitychecker: null }
