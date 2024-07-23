@@ -37,12 +37,18 @@ class GenerateDataMigrationsCommand extends Command
 		$migrationFile = 'migrations/' . $migrationFileName;
 
 		$migrationSql = '';
+		$truncateSql =  '$this->addSql("SET foreign_key_checks = 0");' . "\n";
 
 		foreach ($tables as $table) {
 
 			if ($table === 'doctrine_migration_versions') {
 				continue;
 			}
+
+			$truncateSql .= sprintf(
+				'$this->addSql' . '("TRUNCATE TABLE `%s`");' . "\n",
+				$table
+			);
 
 			$data = $this->connection->fetchAllAssociative("SELECT * FROM $table");
 
@@ -57,6 +63,7 @@ class GenerateDataMigrationsCommand extends Command
 				$columnsList = implode(', ', $columns);
 				$valuesList = implode(', ', array_map([$this, 'quoteValue'], $values));
 
+
 				$migrationSql .= sprintf(
 					'$this->addSql' . '("INSERT INTO %s (%s) VALUES (%s)");' . "\n",
 					$table,
@@ -65,9 +72,10 @@ class GenerateDataMigrationsCommand extends Command
 				);
 			}
 		}
+		$truncateSql .=  '$this->addSql("SET foreign_key_checks = 1");' . "\n";
 
 
-		$this->writeMigrationFile($migrationFile, $migrationSql);
+		$this->writeMigrationFile($migrationFile, $migrationSql, $truncateSql);
 
 		$io->success("Data migrations generated successfully inside '$migrationFileName' !");
 
@@ -87,7 +95,7 @@ class GenerateDataMigrationsCommand extends Command
 		return $this->connection->quote($value);
 	}
 
-	private function writeMigrationFile($filePath, $migrationSql)
+	private function writeMigrationFile(string $filePath, string $migrationSql, string $truncateSql): void
 	{
 		$migrationTemplate = <<<'EOT'
 <?php
@@ -103,7 +111,14 @@ final class Version%s extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Data migration';
+        return 'Generated DATA from existing DATA in database, ' . 
+        'Alert ! this script will truncate all tables before beginning';
+    }
+    
+    public function preUp(Schema $schema): void
+    {
+        // Important to truncate table before adding duplicate values
+%s
     }
 
     public function up(Schema $schema): void
@@ -119,15 +134,20 @@ final class Version%s extends AbstractMigration
 }
 EOT;
 
-		$migrationClass = sprintf($migrationTemplate, date('YmdHis'), $this->indent($migrationSql, 2));
+		$migrationClass = sprintf(
+			$migrationTemplate,
+			date('YmdHis'),
+			$this->indent($truncateSql, 2),
+			$this->indent($migrationSql, 2)
+		);
 
 		file_put_contents($filePath, $migrationClass);
 	}
 
-	private function indent($text, $level = 1)
+	private function indent($text, $level = 1): string
 	{
 		$indentation = str_repeat('    ', $level);
-		return implode("\n", array_map(function ($line) use ($indentation) {
+		return implode("\n", array_map(static function ($line) use ($indentation): string {
 			return $indentation . $line;
 		}, explode("\n", $text)));
 	}
