@@ -23,7 +23,7 @@ final class GenerateQuestionsAnswersCommand extends Command
 	private const ARR_QUESTIONS = [
 		'color' => ['Question about color','What is your favorite color?', '2021-10-07 10:30:35', '2011-07-07 12:30:35'],
 		'animal' => ['Question about animal','What is your favorite animal?', '2020-05-14 22:30:35', '2012-07-07 8:30:35'],
-		'food' => ['Question about foot','What is your favorite food?', '2018-05-12 22:30:35', '2022-07-07 22:30:35'],
+		'food' => ['Question about food','What is your favorite food?', '2018-05-12 22:30:35', '2022-07-07 22:30:35'],
 	];
 
 	private const ARR_ANSWERS = [
