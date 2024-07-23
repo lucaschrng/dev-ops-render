@@ -49,10 +49,10 @@ final class QuestionFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
-     * @todo inject services if required
      */
     public function __construct()
     {
+	    parent::__construct();
     }
 
     public static function class(): string
@@ -62,19 +62,18 @@ final class QuestionFactory extends PersistentProxyObjectFactory
 
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
      */
     protected function defaults(): array|callable
     {
-        return [
-            'createdAt' => self::faker()->dateTime(),
-            'name' => self::faker()->text(255),
-            'question' => self::faker()->text(),
-            'slug' => self::faker()->text(255),
-            'updatedAt' => self::faker()->dateTime(),
-            'votes' => self::faker()->randomNumber(),
-        ];
+		return [
+			'createdAt' => self::faker()->dateTimeBetween('-1 year'),
+			'updatedAt' => self::faker()->dateTime(),
+			'name' => self::faker()->realText(50),
+			'question' => self::faker()->text(),
+			'askedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
+			'votes' => random_int(-20, 50),
+			'slug' => self::faker()->slug(),
+		];
     }
 
     /**
