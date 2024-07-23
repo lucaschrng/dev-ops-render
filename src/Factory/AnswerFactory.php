@@ -49,10 +49,10 @@ final class AnswerFactory extends PersistentProxyObjectFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
-     * @todo inject services if required
      */
     public function __construct()
     {
+		parent::__construct();
     }
 
     public static function class(): string
@@ -67,14 +67,14 @@ final class AnswerFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
-        return [
-            'content' => self::faker()->text(),
-            'createdAt' => self::faker()->dateTime(),
-            'question' => QuestionFactory::new(),
-            'updatedAt' => self::faker()->dateTime(),
-            'username' => self::faker()->text(255),
-            'votes' => self::faker()->randomNumber(),
-        ];
+	    return [
+		    'content' => self::faker()->text(),
+		    'username' => self::faker()->userName(),
+		    'createdAt' => self::faker()->dateTimeBetween('-1 year'),
+		    'updatedAt' => self::faker()->dateTime(),
+		    'votes' => random_int(-20, 50),
+		    'question' => QuestionFactory::new(),
+	    ];
     }
 
     /**
