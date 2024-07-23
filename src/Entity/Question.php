@@ -50,9 +50,10 @@ class Question
      */
     private int $votes = 0;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question")
-     */
+	/**
+	 * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY")
+	 * @ORM\OrderBy({"createdAt" = "DESC"})
+	 */
     private Collection $answers;
 
     public function __construct()
@@ -164,23 +165,26 @@ class Question
         return $this->answers;
     }
 
-    public function addAnswer(Answer $answer): self
-    {
-        if (! $this->answers->contains($answer)) {
-            $this->answers[] = $answer;
-            $answer->setQuestion($this);
-        }
+	public function addAnswer(Answer $answer): self
+	{
+		if (!$this->answers->contains($answer)) {
+			$this->answers[] = $answer;
+			$answer->setQuestion($this);
+		}
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->answers->removeElement($answer) && $answer->getQuestion() === $this) {
-            // set the owning side to null (unless alr
-            $answer->setQuestion(null);
-        }
+	public function removeAnswer(Answer $answer): self
+	{
+		if ($this->answers->removeElement($answer)) {
+			// set the owning side to null (unless already changed)
+			if ($answer->getQuestion() === $this) {
+				$answer->setQuestion(null);
+			}
+		}
 
-        return $this;
-    }
+		return $this;
+	}
+
 }
