@@ -54,11 +54,12 @@ final class GenerateQuestionsAnswersCommand extends Command
 		$this->slugger = $slugger;
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
 		$this
 			->setDescription('Generate Questions and Answers and persist them to the database');
 	}
+
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
@@ -104,4 +105,3 @@ final class GenerateQuestionsAnswersCommand extends Command
 		return Command::SUCCESS;
 	}
 }
-
