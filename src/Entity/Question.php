@@ -177,11 +177,9 @@ class Question
 
 	public function removeAnswer(Answer $answer): self
 	{
-		if ($this->answers->removeElement($answer)) {
-			// set the owning side to null (unless already changed)
-			if ($answer->getQuestion() === $this) {
-				$answer->setQuestion(null);
-			}
+		// set the owning side to null (unless already changed)
+		if ($this->answers->removeElement($answer) && $answer->getQuestion() === $this) {
+			$answer->setQuestion(null);
 		}
 
 		return $this;
