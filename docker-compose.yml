@@ -21,7 +21,7 @@ services:
         image : donbrico/mysql-80-debian:v1.1.0
         working_dir: /application
         volumes:
-            - ./.docker/data/db:/var/lib/mysql
+            - ./phpdocker/data/db:/var/lib/mysql
         command:
             - "--default-authentication-plugin=mysql_native_password"
             - "--lower_case_table_names=1"
