@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -d --name stack-sf5-mysql --env-file .env.local -p 2010:80 -p 2011:8025 -p 2012:3306 -p 2013:80 my-microservices-stack
