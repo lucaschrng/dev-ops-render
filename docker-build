@@ -1,2 +1,6 @@
 #!/bin/bash
-docker build --build-arg APP_PATH --build-arg DB_NAME -t my-microservices-stack:"$1" .
+# Charger les variables d'environnement depuis le fichier .env.local
+# shellcheck disable=SC2046
+export $(grep -v '^#' .env.local | xargs)
+docker build --build-arg APP_PATH --build-arg DB_NAME --build-arg MYSQL_ROOT_USER --build-arg MYSQL_ROOT_PASSWORD --build-arg MYSQL_DATABASE --build-arg MYSQL_PASSWORD -t donbrico/devbox-sf5-mysql:"$1" .
+docker push donbrico/devbox-sf5-mysql:"$1"

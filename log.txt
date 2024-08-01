@@ -1,0 +1,29 @@
+[+] Building 9.7s (10/16)                                                                                                                 docker:default
+ => [internal] load build definition from Dockerfile                                                                                                0.0s
+ => => transferring dockerfile: 1.58kB                                                                                                              0.0s
+ => [internal] load metadata for docker.io/library/ubuntu:20.04                                                                                     0.9s
+ => [auth] library/ubuntu:pull token for registry-1.docker.io                                                                                       0.0s
+ => [internal] load .dockerignore                                                                                                                   0.0s
+ => => transferring context: 90B                                                                                                                    0.0s
+ => [ 1/11] FROM docker.io/library/ubuntu:20.04@sha256:0b897358ff6624825fb50d20ffb605ab0eaea77ced0adb8c6a4b756513dec6fc                             0.0s
+ => [internal] load build context                                                                                                                   5.4s
+ => => transferring context: 2.11MB                                                                                                                 5.3s
+ => CACHED [ 2/11] RUN apt-get update && apt-get install -y     nginx     php-fpm     php-mysql     mysql-server     redis-server     memcached     0.0s
+ => CACHED [ 3/11] COPY .env.local /application/.env.local                                                                                          0.0s
+ => [ 4/11] COPY init.sql /docker-entrypoint-initdb.d/                                                                                              0.1s
+ => ERROR [ 5/11] RUN service mysql start &&     mysql < /docker-entrypoint-initdb.d/init.sql                                                       3.2s
+------
+ > [ 5/11] RUN service mysql start &&     mysql < /docker-entrypoint-initdb.d/init.sql:
+0.695  * Starting MySQL database server mysqld
+0.768 su: warning: cannot change directory to /nonexistent: No such file or directory
+2.872    ...done.
+2.971 ERROR 1064 (42000) at line 4: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '{DB_NAME}' at line 1
+------
+Dockerfile:38
+--------------------
+  37 |     # Configuration de MySQL
+  38 | >>> RUN service mysql start && \
+  39 | >>>     mysql < /docker-entrypoint-initdb.d/init.sql
+  40 |
+--------------------
+ERROR: failed to solve: process "/bin/sh -c service mysql start &&     mysql < /docker-entrypoint-initdb.d/init.sql" did not complete successfully: exit code: 1

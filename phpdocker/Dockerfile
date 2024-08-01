@@ -1,9 +1,6 @@
 # Utiliser une image de base compatible avec tous vos services
 FROM ubuntu:20.04
 
-# Définir le frontend Debian pour éviter les invites interactives
-ENV DEBIAN_FRONTEND=noninteractive
-
 # Installation des dépendances générales
 RUN apt-get update && apt-get install -y \
     nginx \
@@ -19,27 +16,20 @@ RUN apt-get update && apt-get install -y \
     unzip \
     supervisor \
     curl \
-    mailutils \
-    postfix
+    mailutils
 
 # Copier les fichiers .env
 COPY .env /application/.env
-COPY .env.local /application/.env.local
 
 # Charger les variables d'environnement
-ENV APP_PATH=/home/wwwroot/sf5-p4
-ENV DB_NAME=db-sf5-p4
-ENV MYSQL_ROOT_USER=root
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=db-sf5-p4
-ENV MYSQL_PASSWORD=root
+RUN export $(cat /application/.env | xargs)
 
 # Configuration de MySQL
 RUN service mysql start && \
     mysql -e "CREATE USER '${MYSQL_ROOT_USER}'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';" && \
     mysql -e "GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'%';" && \
     mysql -e "FLUSH PRIVILEGES;" && \
-    mysql -e "CREATE DATABASE \`${DB_NAME}\`;"
+    mysql -e "CREATE DATABASE ${DB_NAME};"
 
 # Copier les configurations spécifiques de PHP, Nginx, MySQL, etc.
 COPY phpdocker/php-fpm/php-ini-overrides.ini /etc/php/8.1/fpm/conf.d/99-overrides.ini
