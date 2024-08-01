@@ -1,0 +1,3 @@
+#!/bin/bash
+docker stop stack-sf5-mysql
+docker rm stack-sf5-mysql
