@@ -1,2 +1,13 @@
 grumphp:
-    tasks:
+  tasks:
+    shell:
+      scripts:
+        - 'docker exec sf5-ci-cd-php vendor/bin/phpcs --standard=PSR12'
+        - 'docker exec sf5-ci-cd-php vendor/bin/phpstan analyse --level=5'
+        - 'docker exec sf5-ci-cd-php vendor/bin/psalm'
+        - 'docker exec sf5-ci-cd-php composer validate'
+        - 'docker exec sf5-ci-cd-php composer run-script cs-fixer'
+        - 'docker exec sf5-ci-cd-php symfony check:requirements'
+        - 'docker exec sf5-ci-cd-php symfony check:security'
+    git_blacklist:
+      keywords: ['die(', 'var_dump(', 'exit(']
