@@ -1,93 +1,142 @@
-# This file is a template, and might need editing before it works on your project.
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-#
-# You can copy and paste this template into a new `.gitlab-ci.yml` file.
-# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
-#
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
-#  Version Deployment #112
-
-
 variables:
-  HEROKU_APP_NAME: "${HEROKU_APP_NAME}"
-  HEROKU_PRODUCTION_KEY: "${HEROKU_PRODUCTION_KEY}"
-
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-
-  SONAR_TOKEN: "${SONAR_TOKEN}"
-  SONAR_HOST_URL: "${SONAR_HOST_URL}"
+    HEROKU_APP_NAME: "${HEROKU_APP_NAME}"
+    HEROKU_PRODUCTION_KEY: "${HEROKU_PRODUCTION_KEY}"
+    
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+    
+    SONAR_TOKEN: "${SONAR_TOKEN}"
+    SONAR_HOST_URL: "${SONAR_HOST_URL}"
 
 stages:          # List of stages for jobs, and their order of execution
-  - build
-  - quality
-  - test
-  - deploy
-#  - production
+    - build
+    - quality
+    - test
+    - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+# Définir l'image par défaut pour tout le stage quality
+.default_quality:
+    image: jakzal/phpqa:php8.0  # Image contenant tous les outils de qualité pour PHP
+    dependencies:
+        - build-job
 
-quality:       # This job runs in the quality stage, which runs first.
-  stage: quality
-  script:
-    - echo "Must be analyse with Sonar Cloud..."
-    - echo "Compile complete."
+build-job:
+    stage: build
+    image: php:8.0-fpm
+    services:
+        - name: postgres:14
+          alias: postgres
+    variables:
+        POSTGRES_DB: myapptest_test
+        POSTGRES_USER: myapptest
+        POSTGRES_PASSWORD: myapptest
+        DATABASE_URL: 'postgresql://myapptest:myapptest@postgres:5432/myapptest_test'
+    cache:
+        paths:
+            - vendor/
+    artifacts:
+        paths:
+            - ./  # Sauvegarder tout le répertoire de l'application
+    before_script:
+        - apt-get update && apt-get install -y git libzip-dev unzip libpq-dev postgresql-client libicu-dev  # Ajout de libicu-dev pour l'extension intl
+        - docker-php-ext-install pdo pdo_pgsql zip intl  # Ajout de intl
+        - curl -sS https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
+        # Créer le fichier .env.local à partir de .env.local.dist sans les commentaires
+        - grep -v '^#' .env.local.dist > .env.local
+        # Mise à jour de composer.lock et des dépendances pour résoudre les conflits
+        - composer update --with-all-dependencies
+    script:
+        - php -v
+        - php -m
+        - php bin/console cache:clear
+    allow_failure: false
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
-  script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+phpcs:
+    stage: quality
+    extends: .default_quality  # Utilisation de l'image définie pour quality
+    script:
+        - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
+    allow_failure: true
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+phpstan:
+    stage: quality
+    extends: .default_quality  # Utilisation de l'image définie pour quality
+    script:
+        - phpstan analyse ./src
+    allow_failure: true
 
+twig-lint:
+    stage: quality
+    extends: .default_quality  # Utilisation de l'image définie pour quality
+    script:
+        - twig-lint lint ./templates
+    allow_failure: true
+
+security-checker:
+    stage: quality
+    extends: .default_quality  # Utilisation de l'image définie pour quality
+    script:
+        - local-php-security-checker --path=./composer.lock
+    allow_failure: false
 
 sonarcloud-check:
-  stage: quality
-  image:
-    name: sonarsource/sonar-scanner-cli:latest
-    entrypoint: [""]
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - sonar-scanner
-  only:
-    - merge_requests
-    - main
-    - master
-    - develop
+    stage: quality
+    image: sonarsource/sonar-scanner-cli:latest
+    cache:
+        key: "${CI_JOB_NAME}"
+        paths:
+            - .sonar/cache
+    script:
+        - sonar-scanner
+    only:
+        - merge_requests
+        - main
+        - master
+        - develop
 
+phpunit:
+    stage: test
+    dependencies:
+        - build-job  # Utilise les artefacts du build-job
+    script:
+        # Générer les migrations automatiquement après la création de la base de données
+        - php bin/console doctrine:migrations:diff --env=test
+        # Exécution des migrations
+        - php bin/console doctrine:migration:migrate --env=test --no-interaction
+        # Charger les fixtures
+        - php bin/console doctrine:fixtures:load --env=test --no-interaction
+        # Exécuter les tests PHPUnit
+        - vendor/bin/phpunit --testdox
+    allow_failure: false
+
+
+
+unit-test-job:
+    stage: test
+    dependencies:
+        - build-job
+    script:
+        - echo "Running unit tests... This will take about 60 seconds."
+        - sleep 60
+        - echo "Code coverage is 90%"
+
+lint-test-job:
+    stage: test
+    dependencies:
+        - build-job
+    script:
+        - echo "Linting code... This will take about 10 seconds."
+        - sleep 10
+        - echo "No lint issues found."
 
 heroku_deploy:
-  stage: deploy
-  script:
-    - apt-get update -qy
-    - apt-get install -yqq ruby ruby-dev nodejs --silent
-    - gem update --system
-    - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_PRODUCTION_KEY
-  only:
-    - master
+    stage: deploy
+    script:
+        - apt-get update -qy
+        - apt-get install -yqq ruby ruby-dev nodejs --silent
+        - gem update --system
+        - gem install dpl
+        - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_PRODUCTION_KEY
+    only:
+        - master
+        - main
