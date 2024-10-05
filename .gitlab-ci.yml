@@ -24,7 +24,7 @@ build-job:
     stage: build
     image: php:8.0-fpm
     services:
-        - name: postgres:14
+        - name: postgres:13
           alias: postgres
     variables:
         POSTGRES_DB: myapptest_test
@@ -96,8 +96,33 @@ sonarcloud-check:
 
 phpunit:
     stage: test
+    image: php:8.0-fpm
+    services:
+        - name: postgres:13
+          alias: postgres
     dependencies:
         - build-job  # Utilise les artefacts du build-job
+    variables:
+        POSTGRES_DB: myapptest_test
+        POSTGRES_USER: myapptest
+        POSTGRES_PASSWORD: myapptest
+        DATABASE_URL: 'postgresql://myapptest:myapptest@postgres:5432/myapptest_test'
+        APP_ENV: test  # Assurer que l'environnement est en mode test
+    before_script:
+        # Installer les dépendances nécessaires
+        - apt-get update && apt-get install -y git libzip-dev unzip libpq-dev postgresql-client libicu-dev
+        - docker-php-ext-install pdo pdo_pgsql zip intl
+        # Installer composer
+        - curl -sS https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
+        # Créer le fichier .env.local à partir de .env.local.dist sans les commentaires
+        - grep -v '^#' .env.local.dist > .env.local
+        # Mettre à jour les dépendances PHP
+        - composer update --with-all-dependencies
+        # Nettoyer le cache de Symfony
+        - php bin/console cache:clear
+        # Recréation de la base de données pour l'environnement de test
+        - php bin/console doctrine:database:drop --if-exists --force --env=test
+        - php bin/console doctrine:database:create --env=test
     script:
         # Générer les migrations automatiquement après la création de la base de données
         - php bin/console doctrine:migrations:diff --env=test
