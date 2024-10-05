@@ -3,7 +3,7 @@
     "license": "proprietary",
 
     "require": {
-        "php": "^8.0",
+        "php": ">=8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
@@ -16,7 +16,6 @@
         "knplabs/knp-time-bundle": "^1.19",
         "league/commonmark": "^2.4",
         "league/html-to-markdown": "^5.1",
-        "phpro/grumphp": "^1.16",
         "psr/http-factory": "*",
         "sentry/sentry-symfony": "^5.0",
         "stof/doctrine-extensions-bundle": "^1.5.0",
@@ -25,8 +24,12 @@
         "symfony/dotenv": "5.4.*",
         "symfony/flex": "^v1.21.6",
         "symfony/framework-bundle": "5.4.*",
+        "symfony/mailer": "5.4.*",
         "symfony/monolog-bundle": "^3.0",
         "symfony/proxy-manager-bridge": "5.4.*",
+        "symfony/security-bundle": "5.4.*",
+        "symfony/security-core": "5.4.*",
+        "symfony/security-guard": "5.4.*",
         "symfony/stopwatch": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.7",
@@ -35,7 +38,6 @@
         "twig/markdown-extra": "^3.10",
         "twig/twig": "3.4.3.0"
     },
-
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.1",
         "dg/bypass-finals": "*",
@@ -46,9 +48,10 @@
         "nunomaduro/phpinsights": "^2.6",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpmd/phpmd": "^2.13",
+        "phpro/grumphp": "^1.16",
         "phpstan/phpdoc-parser": "^1.2",
         "phpstan/phpstan": "^1.9",
-        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "^9.5",
         "squizlabs/php_codesniffer": "^3.10",
         "symfony/browser-kit": "5.4.*, !=5.4.7",
         "symfony/css-selector": "5.4.*, !=5.4.7",
@@ -109,6 +112,13 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "regen-migrations" : [
+            "@php bin/console doctrine:database:drop -f --if-exists",
+            "@php bin/console doctrine:database:create",
+            "@php bin/console doctrine:schema:update -f --complete",
+            "@php bin/console app:generate-questions-answers",
+            "@php bin/console cache:clear"
+        ],
         "load-data": [
             "@php bin/console doctrine:database:drop -f --if-exists",
             "@php bin/console doctrine:database:create",
@@ -136,33 +146,33 @@
             "vendor/bin/ecs --fix"
         ],
         "code:quality": [
-            "@php -d memory_limit=4G ./vendor/bin/psalm src tests",
-            "@php -d memory_limit=4G ./vendor/bin/phpstan analysphp bin/console doctrine:schema:update --force --env=teste -c phpstan.neon src tests",
-            "@php -d memory_limit=4G ./vendor/bin/phpmd src,tests text phpmd.rulesets.xml",
-            "@php -d memory_limit=4G ./vendor/bin/phpcs src tests --report=summary"
+            "@php -d memory_limit=4G ./vendor/bin/phpcs -v --standard=PSR12 src tests --report=summary",
+            "@php -d memory_limit=4G ./vendor/bin/php-cs-fixer fix tests",
+            "@php -d memory_limit=4G ./vendor/bin/phpcbf src",
+            "@php -d memory_limit=4G ./vendor/bin/phpcbf tests"
         ],
         "run-fixtures": [
             "@php bin/console doctrine:database:drop --force --env=test",
             "@php bin/console doctrine:database:create --env=test",
             "@php bin/console doctrine:schema:update --force --env=test",
-            "make alice env=test",
             "@php -d memory_limit=1G bin/console cache:clear --env=test"
         ],
         "load-fixtures": [
-            "@php bin/console doctrine:database:drop --force --env=local",
-            "@php bin/console doctrine:database:create --env=local",
-            "@php bin/console doctrine:schema:update --force --env=local",
-            "@php bin/console doctrine:fixtures:load -n --env=local",
-            "@php -d memory_limit=1G bin/console cache:clear --env=local",
-            "make alice env=local"
+            "@php bin/console doctrine:database:drop --force --env=dev",
+            "@php bin/console doctrine:database:create --env=dev",
+            "@php bin/console doctrine:schema:update --force --env=dev",
+            "@php bin/console doctrine:fixtures:load -n --env=dev",
+            "@php -d memory_limit=1G bin/console cache:clear --env=dev",
+            "make alice env=dev"
         ],
         "reset-db": [
-            "@php bin/console doctrine:database:drop --force --env=local",
-            "@php bin/console doctrine:database:create --env=local",
-            "@php -d memory_limit=1G bin/console cache:clear --env=local"
+            "@php bin/console doctrine:database:drop --force --env=dev",
+            "@php bin/console doctrine:database:create --env=dev",
+            "@php -d memory_limit=1G bin/console cache:clear --env=dev"
         ],
         "test": [
-            "@php bin/phpunit --testdox"
+            "@run-fixtures",
+            "@php vendor/bin/phpunit --testdox"
         ]
     },
 
