@@ -7,25 +7,48 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20230618214552 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return 'CREATE a new table answer';
-    }
+	public function getDescription(): string
+	{
+		return 'Create the answer table';
+	}
 
-    public function up(Schema $schema): void
-    {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE answer (id INT AUTO_INCREMENT NOT NULL, content LONGTEXT NOT NULL, username VARCHAR(255) NOT NULL, votes INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-    }
+	public function up(Schema $schema): void
+	{
+		// Création de la table 'answer' de manière agnostique
+		$table = $schema->createTable('answer');
 
-    public function down(Schema $schema): void
-    {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE answer');
-    }
+		// Ajout de la colonne 'id' en tant qu'auto-incrément
+		$table->addColumn('id', 'integer', [
+			'autoincrement' => true
+		]);
+
+		// Ajout des autres colonnes
+		$table->addColumn('content', 'text', [
+			'notnull' => true
+		]);
+		$table->addColumn('username', 'string', [
+			'length' => 255,
+			'notnull' => true
+		]);
+		$table->addColumn('votes', 'integer', [
+			'notnull' => true
+		]);
+		$table->addColumn('created_at', 'datetime', [
+			'notnull' => true
+		]);
+		$table->addColumn('updated_at', 'datetime', [
+			'notnull' => true
+		]);
+
+		// Définir la clé primaire
+		$table->setPrimaryKey(['id']);
+	}
+
+	public function down(Schema $schema): void
+	{
+		// Suppression de la table 'answer'
+		$schema->dropTable('answer');
+	}
 }
