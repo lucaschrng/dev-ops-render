@@ -62,8 +62,7 @@ phpstan:
     stage: quality
     extends: .default_quality  # Utilisation de l'image définie pour quality
     script:
-        - phpstan analyse ./src
-        - phpstan analyse ./tests
+        - phpstan analyse ./src ./tests
     allow_failure: false
 
 twig-lint:

@@ -12,9 +12,8 @@ class CommentController extends AbstractController
 {
     /**
      * @Route("/comments/{id}/vote/{direction<up|down>}", methods="POST")
-     * @throws RandomException
      */
-    public function commentVote($id, $direction, LoggerInterface $logger)
+    public function commentVote($id, $direction, LoggerInterface $logger): JsonResponse
     {
         // todo - use id to query the database
 

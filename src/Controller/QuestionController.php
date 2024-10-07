@@ -92,7 +92,7 @@ EOF);
 
         $question = $questionRepository->findOneBySlug($slug);
 
-        if ($question === null) {
+        if (empty($question)) {
             throw new EntityNotFoundException(sprintf("No question has been found with this slug '%s'", $slug));
         }
 
