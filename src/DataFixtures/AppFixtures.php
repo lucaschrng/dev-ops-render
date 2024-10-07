@@ -13,12 +13,12 @@ class AppFixtures extends Fixture
     {
         QuestionFactory::createMany(5);
 
-		AnswerFactory::createMany(3, static function() {
-			return [
-				'question' => QuestionFactory::random(),
-			];
-		});
+        AnswerFactory::createMany(3, static function () {
+            return [
+                'question' => QuestionFactory::random(),
+            ];
+        });
 
-		$manager->flush();
+        $manager->flush();
     }
 }

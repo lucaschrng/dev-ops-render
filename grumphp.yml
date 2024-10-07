@@ -1,13 +1,33 @@
 grumphp:
-  tasks:
-    shell:
-      scripts:
-        - 'docker exec sf5-ci-cd-php vendor/bin/phpcs --standard=PSR12'
-        - 'docker exec sf5-ci-cd-php vendor/bin/phpstan analyse --level=5'
-        - 'docker exec sf5-ci-cd-php vendor/bin/psalm'
-        - 'docker exec sf5-ci-cd-php composer validate'
-        - 'docker exec sf5-ci-cd-php composer run-script cs-fixer'
-        - 'docker exec sf5-ci-cd-php symfony check:requirements'
-        - 'docker exec sf5-ci-cd-php symfony check:security'
-    git_blacklist:
-      keywords: ['die(', 'var_dump(', 'exit(']
+
+#  hooks_preset: local
+#  stop_on_failure: true
+#  parallel: false
+#  process_timeout: 60
+
+#  git_hooks:
+#    pre_commit: false
+#    pre_push: false
+#
+#
+#  tasks:
+#    git_blacklist:
+#      keywords:
+#        - 'var_dump'
+#        - 'die'
+#        - 'exit'
+#        - 'debug_print_backtrace'
+#      triggered_by: ['php']
+#
+#    phpcs:
+#      standard: PSR12
+#      triggered_by: ['php']
+#
+#    phpstan:
+#      configuration: phpstan.neon
+#      level: max
+#      triggered_by: ['php']
+
+#    psalm:
+#      config: psalm.xml
+#      triggered_by: ['php']

@@ -15,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class QuestionController extends AbstractController
 {
-    private $logger;
+    private LoggerInterface $logger;
 
-    private $isDebug;
+    private bool $isDebug;
 
     public function __construct(LoggerInterface $logger, bool $isDebug)
     {
@@ -28,7 +28,7 @@ class QuestionController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(EntityManagerInterface $entityManager)
+    public function homepage(EntityManagerInterface $entityManager): Response
     {
         $repository = $entityManager->getRepository(Question::class);
         $questions = $repository->findBy([], [

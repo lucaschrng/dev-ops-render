@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Question|null findOneBy(array $criteria, array $orderBy = null)
  * @method Question[]    findAll()
  * @method Question[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Question[]    findOneBySlug(string $slug)
  */
 class QuestionRepository extends ServiceEntityRepository
 {
