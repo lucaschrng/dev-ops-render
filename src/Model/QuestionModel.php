@@ -18,8 +18,7 @@ class QuestionModel
         $this->name = $values[0] ?? 'no name';
         $this->question = $values[1] ?? 'no question';
         $this->vote = random_int(-20, 20);
-	    $this->slug = strtolower($slugger->slug($this->name)->toString());
-
+        $this->slug = strtolower($slugger->slug($this->name)->toString());
     }
 
     public function getValues(): array
