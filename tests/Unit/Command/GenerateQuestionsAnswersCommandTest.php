@@ -13,12 +13,15 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\String\UnicodeString;
+
+// Import de la classe UnicodeString
 
 class GenerateQuestionsAnswersCommandTest extends TestCase
 {
-    private EntityManagerInterface $entityManager; // Typage explicite
-    private SluggerInterface $slugger; // Typage explicite
-    private CommandTester $commandTester; // Déclaration de la propriété commandTester
+    private EntityManagerInterface $entityManager;
+    private SluggerInterface $slugger;
+    private CommandTester $commandTester;
 
     /**
      * @throws Exception
@@ -27,6 +30,10 @@ class GenerateQuestionsAnswersCommandTest extends TestCase
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->slugger = $this->createMock(SluggerInterface::class);
+
+        // Simuler la méthode slug pour qu'elle retourne un UnicodeString
+        $this->slugger->method('slug')
+            ->willReturn(new UnicodeString('mocked-slug'));
 
         $command = new GenerateQuestionsAnswersCommand($this->entityManager, $this->slugger);
 
@@ -46,6 +53,7 @@ class GenerateQuestionsAnswersCommandTest extends TestCase
         ];
         $questionModel = new QuestionModel($questionData, $this->slugger);
 
+        // Assertions pour vérifier le comportement attendu
         $this->assertSame('Question about color', $questionModel->getName());
         $this->assertSame('What is your favorite color?', $questionModel->getQuestion());
         $this->assertSame('mocked-slug', $questionModel->getSlug());
@@ -53,9 +61,6 @@ class GenerateQuestionsAnswersCommandTest extends TestCase
 
     public function testExecuteCommand(): void
     {
-        // Simulez les comportements nécessaires pour l'exécution de la commande
-        // Par exemple, vous pourriez configurer des réponses de mock pour l'EntityManager ou le Slugger
-
         // Exécutez la commande
         $this->commandTester->execute([]);
 
@@ -64,8 +69,8 @@ class GenerateQuestionsAnswersCommandTest extends TestCase
 
         // Assurez-vous que la sortie contient ce que vous attendez
         $this->assertStringContainsString(
-            'expected output',
+            'Questions and answers have been generated and persisted to the database.',
             $output
-        ); // Remplacez 'expected output' par ce que vous attendez
+        );
     }
 }
