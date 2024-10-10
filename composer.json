@@ -164,10 +164,9 @@
         "load-fixtures": [
             "@php bin/console doctrine:database:drop --force --env=dev",
             "@php bin/console doctrine:database:create --env=dev",
-            "@php bin/console doctrine:schema:update --force --env=dev",
+            "@php bin/console doctrine:migration:migrate --env=dev -n",
             "@php bin/console doctrine:fixtures:load -n --env=dev",
-            "@php -d memory_limit=1G bin/console cache:clear --env=dev",
-            "make alice env=dev"
+            "@php -d memory_limit=1G bin/console cache:clear --env=dev"
         ],
         "reset-db": [
             "@php bin/console doctrine:database:drop --force --env=dev",
