@@ -123,6 +123,7 @@ phpunit:
 heroku_deploy:
     stage: deploy
     script:
+        - echo "HEROKU_APP_NAME is set to $HEROKU_APP_NAME"
         - apt-get update -qy
         - apt-get install -yqq ruby ruby-dev nodejs curl --silent
         - curl https://cli-assets.heroku.com/install.sh | sh  # Installer le CLI Heroku
