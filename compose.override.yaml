@@ -3,6 +3,7 @@ services:
 ###> symfony/mailer ###
   mailer:
     image: axllent/mailpit
+    container_name: sf5-ci-cd-sf-mailer
     ports:
       - "1025"
       - "8025"
