@@ -27,7 +27,7 @@ class Question
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $name = null;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -50,10 +50,10 @@ class Question
      */
     private int $votes = 0;
 
-	/**
-	 * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY")
-	 * @ORM\OrderBy({"createdAt" = "DESC"})
-	 */
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     */
     private Collection $answers;
 
     public function __construct()
@@ -165,24 +165,23 @@ class Question
         return $this->answers;
     }
 
-	public function addAnswer(Answer $answer): self
-	{
-		if (!$this->answers->contains($answer)) {
-			$this->answers[] = $answer;
-			$answer->setQuestion($this);
-		}
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers[] = $answer;
+            $answer->setQuestion($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function removeAnswer(Answer $answer): self
-	{
-		// set the owning side to null (unless already changed)
-		if ($this->answers->removeElement($answer) && $answer->getQuestion() === $this) {
-			$answer->setQuestion(null);
-		}
+    public function removeAnswer(Answer $answer): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->answers->removeElement($answer) && $answer->getQuestion() === $this) {
+            $answer->setQuestion(null);
+        }
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

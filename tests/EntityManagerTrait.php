@@ -6,7 +6,6 @@ namespace App\Tests;
 
 trait EntityManagerTrait
 {
-
     protected $entityManager;
 
     protected function setUp(): void

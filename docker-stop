@@ -1,3 +1,2 @@
-#!/bin/bash
-docker stop stack-sf5-mysql
-docker rm stack-sf5-mysql
+#[!bin/bash]
+cd ~/www/sf5-p5 && export $(grep -v '^#' .env.local | xargs) && docker-compose down --remove-orphans

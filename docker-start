@@ -1,2 +1,3 @@
-#!/bin/bash
-docker run -d --name donbrico/devbox-sf5-mysql --env-file .env.local -p 2010:80 -p 2011:8025 -p 2012:3306 -p 2013:80 devbox-sf5-mysql
+#[!bin/bash]
+#docker network create --driver bridge ter_networks  --subnet=172.21.0.0/16  --gateway=172.21.0.1 || true
+cd ~/www/sf5-p5 && export $(grep -v '^#' .env.local | xargs) && docker-compose up -d --build --force-recreate

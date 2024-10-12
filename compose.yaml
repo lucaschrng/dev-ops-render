@@ -1,0 +1,94 @@
+###############################################################################
+#                          Brice POTE / Donbrico : Docker stack               #
+###############################################################################
+services:
+  memcached:
+    container_name: sf5-ci-cd-memcached
+    image: donbrico/memcached:v1.0.0
+  
+  mailhog:
+    container_name: sf5-ci-cd-mailhog
+    image: donbrico/mailhog:v1.0.0
+    ports:
+      - '2011:8025'
+  
+  redis:
+    container_name: sf5-ci-cd-redis
+    image: donbrico/redis-alpine:v1.0.0
+
+  database:
+    container_name: sf5-ci-cd-db
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./phpdocker/data/db:/var/lib/postgresql/data:rw
+    ports:
+      - "2022:5432"
+    tty: true
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env.local
+    container_name: sf5-ci-cd-pgadmin
+    ports:
+      - "2023:80"
+    links:
+      - database
+
+  webserver:
+    container_name: sf5-ci-cd-web
+    image: donbrico/nginx-alpine:v1.0.0
+    working_dir: /application
+    volumes:
+      - '.:/application'
+      - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+    ports:
+      - '2010:80'
+
+  php-fpm:
+    container_name: sf5-ci-cd-php
+    image: donbrico/php-fpm-81:v1.5.0
+    working_dir: /application
+    environment:
+      - APP_ENV=dev  # Définit l'environnement (dev, prod, test)
+    volumes:
+      - '.:/application'
+      - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
+      - './phpdocker/php-fpm/php.ini:/usr/local/etc/php/php.ini'  # Bind-mount pour php.ini
+      - './phpdocker/php-fpm/99-xdebug-dev.ini:/etc/php/8.1/fpm/conf.d/99-xdebug-dev.ini'  # Bind-mount pour 99-xdebug-dev.ini
+      - './phpdocker/php-fpm/xdebug-disabled.sh:/usr/bin/xdebug-disabled.sh' # Bind-mount pour xdebug-disabled.sh
+    depends_on:
+      - database
+      - redis
+      - memcached
+
+  node:
+    container_name: sf5-ci-cd-node
+    image: donbrico/node-14:v1.1.0
+    working_dir: /home/wwwroot/sf5-p4
+    volumes:
+      - .:/home/wwwroot/sf5-p4
+    command: [ "bash", "-c", "yarn && yarn dev --watch" ]
+    depends_on:
+      - php-fpm
+
+####> doctrine/doctrine-bundle ###
+#  database:
+#    image: postgres:${POSTGRES_VERSION:-16}-alpine
+#    environment:
+#      POSTGRES_DB: ${POSTGRES_DB:-app}
+#      # You should definitely change the password in production
+#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+#      POSTGRES_USER: ${POSTGRES_USER:-app}
+#    volumes:
+#      - database_data:/var/lib/postgresql/data:rw
+#      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+#      # - ./docker/db/data:/var/lib/postgresql/data:rw
+####< doctrine/doctrine-bundle ###
+
+volumes:
+  ###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
