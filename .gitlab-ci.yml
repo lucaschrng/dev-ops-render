@@ -2,21 +2,20 @@ variables:
     HEROKU_APP_NAME: "${HEROKU_APP_NAME}"
     HEROKU_PRODUCTION_KEY: "${HEROKU_PRODUCTION_KEY}"
     
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-    
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+
     SONAR_TOKEN: "${SONAR_TOKEN}"
     SONAR_HOST_URL: "${SONAR_HOST_URL}"
 
-stages:          # List of stages for jobs, and their order of execution
+stages:
     - build
     - quality
     - test
     - deploy
 
-# Définir l'image par défaut pour tout le stage quality
 .default_quality:
-    image: jakzal/phpqa:php8.0  # Image contenant tous les outils de qualité pour PHP
+    image: jakzal/phpqa:php8.0
     dependencies:
         - build-job
 
@@ -36,14 +35,12 @@ build-job:
             - vendor/
     artifacts:
         paths:
-            - ./  # Sauvegarder tout le répertoire de l'application
+            - ./
     before_script:
-        - apt-get update && apt-get install -y git libzip-dev unzip libpq-dev postgresql-client libicu-dev  # Ajout de libicu-dev pour l'extension intl
-        - docker-php-ext-install pdo pdo_pgsql zip intl  # Ajout de intl
+        - apt-get update && apt-get install -y git libzip-dev unzip libpq-dev postgresql-client libicu-dev
+        - docker-php-ext-install pdo pdo_pgsql zip intl
         - curl -sS https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
-        # Créer le fichier .env.local à partir de .env.local.dist sans les commentaires
         - grep -v '^#' .env.local.dist > .env.local
-        # Mise à jour de composer.lock et des dépendances pour résoudre les conflits
         - composer update --with-all-dependencies
     script:
         - php -v
@@ -53,28 +50,28 @@ build-job:
 
 phpcs:
     stage: quality
-    extends: .default_quality  # Utilisation de l'image définie pour quality
+    extends: .default_quality
     script:
         - phpcs -v --standard=PSR12 --ignore=./src/Kernel.php ./src
     allow_failure: true
 
 phpstan:
     stage: quality
-    extends: .default_quality  # Utilisation de l'image définie pour quality
+    extends: .default_quality
     script:
         - phpstan analyse ./src ./tests
     allow_failure: false
 
 twig-lint:
     stage: quality
-    extends: .default_quality  # Utilisation de l'image définie pour quality
+    extends: .default_quality
     script:
         - twig-lint lint ./templates
     allow_failure: true
 
 security-checker:
     stage: quality
-    extends: .default_quality  # Utilisation de l'image définie pour quality
+    extends: .default_quality
     script:
         - local-php-security-checker --path=./composer.lock
     allow_failure: true
@@ -101,46 +98,42 @@ phpunit:
         - name: postgres:13
           alias: postgres
     dependencies:
-        - build-job  # Utilise les artefacts du build-job
+        - build-job
     variables:
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
-        APP_ENV: test  # Assurer que l'environnement est en mode test
+        APP_ENV: test
     before_script:
-        # Installer les dépendances nécessaires
         - apt-get update && apt-get install -y git libzip-dev unzip libpq-dev postgresql-client libicu-dev
         - docker-php-ext-install pdo pdo_pgsql zip intl
-        # Installer composer
         - curl -sS https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
-        # Créer le fichier .env.local à partir de .env.local.dist sans les commentaires
         - grep -v '^#' .env.local.dist > .env.local
-        # Mettre à jour les dépendances PHP
         - composer update --with-all-dependencies
-        # Nettoyer le cache de Symfony
         - php bin/console cache:clear
-        # Recréation de la base de données pour l'environnement de test
         - php bin/console doctrine:database:drop --if-exists --force --env=test
         - php bin/console doctrine:database:create --env=test
     script:
-        # Exécution des migrations
         - php bin/console doctrine:migration:migrate --env=test --no-interaction
-        # Charger les fixtures
         - php bin/console doctrine:fixtures:load --env=test --no-interaction
-        # Exécuter les tests PHPUnit
         - vendor/bin/phpunit --testdox
     allow_failure: false
-
 
 heroku_deploy:
     stage: deploy
     script:
         - apt-get update -qy
-        - apt-get install -yqq ruby ruby-dev nodejs --silent
+        - apt-get install -yqq ruby ruby-dev nodejs curl --silent
+        - curl https://cli-assets.heroku.com/install.sh | sh  # Installer le CLI Heroku
+        - heroku --version  # Vérifier l'installation de Heroku CLI
+        - heroku plugins:install heroku-repo  # Installer le plugin heroku-repo pour purger le cache
+        - heroku repo:purge_cache -a $HEROKU_APP_NAME  # Purger le cache Heroku
+        # Déploiement Heroku
         - gem update --system
         - gem install dpl
         - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_PRODUCTION_KEY
     only:
         - master
         - main
+
