@@ -132,8 +132,6 @@
             "@php bin/console app:generate-data-migrations"
         ],
         "compile": [
-            "@php bin/console doctrine:database:drop -f --if-exists",
-            "@php bin/console doctrine:database:create",
             "@php bin/console doctrine:schema:update -f --complete",
             "@php bin/console app:generate-questions-answers",
             "@php bin/console cache:clear",
