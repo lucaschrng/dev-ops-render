@@ -132,8 +132,7 @@
             "@php bin/console app:generate-data-migrations"
         ],
         "compile": [
-            "@php bin/console doctrine:schema:update -f --complete",
-            "@php bin/console app:generate-questions-answers",
+            "@php bin/console doctrine:migration:migrate -n",
             "@php bin/console cache:clear",
             "@php bin/console cache:warmup"
         ],
