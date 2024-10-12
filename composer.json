@@ -132,9 +132,9 @@
             "@php bin/console app:generate-data-migrations"
         ],
         "compile": [
-            "@php bin/console doctrine:migration:migrate -n",
-            "@php bin/console cache:clear",
-            "@php bin/console cache:warmup"
+            "@php bin/console doctrine:migration:migrate -n --env=prod",
+            "@php bin/console cache:clear --env=prod",
+            "@php bin/console cache:warmup --env=prod"
         ],
         "compile-dev": [
             "@php bin/console doctrine:database:drop -f --if-exists",

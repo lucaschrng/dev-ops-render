@@ -88,7 +88,6 @@ sonarcloud-check:
     only:
         - merge_requests
         - main
-        - master
         - develop
 
 phpunit:
@@ -135,6 +134,5 @@ heroku_deploy:
         - gem install dpl
         - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_PRODUCTION_KEY
     only:
-        - master
         - main
 
