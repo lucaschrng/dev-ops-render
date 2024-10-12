@@ -10,41 +10,67 @@ use App\Model\QuestionModel;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\String\UnicodeString;
+
+// Import de la classe UnicodeString
 
 class GenerateQuestionsAnswersCommandTest extends TestCase
 {
-	private $entityManager;
-	private $slugger;
+    private EntityManagerInterface $entityManager;
+    private SluggerInterface $slugger;
+    private CommandTester $commandTester;
 
-	/**
-	 * @throws Exception
-	 */
-	protected function setUp(): void
-	{
-		$this->entityManager = $this->createMock(EntityManagerInterface::class);
-		$this->slugger = $this->createMock(SluggerInterface::class);
+    /**
+     * @throws Exception
+     */
+    protected function setUp(): void
+    {
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->slugger = $this->createMock(SluggerInterface::class);
 
-		$command = new GenerateQuestionsAnswersCommand($this->entityManager, $this->slugger);
+        // Simuler la méthode slug pour qu'elle retourne un UnicodeString
+        $this->slugger->method('slug')
+            ->willReturn(new UnicodeString('mocked-slug'));
 
-		$application = new Application();
-		$application->add($command);
+        $command = new GenerateQuestionsAnswersCommand($this->entityManager, $this->slugger);
 
-		$this->commandTester = new CommandTester($command);
-	}
+        $application = new Application();
+        $application->add($command);
 
+        $this->commandTester = new CommandTester($command);
+    }
 
-	public function testQuestionModelInteraction(): void
-	{
-		$questionData = ['Question about color', 'What is your favorite color?', '2021-10-07 10:30:35', '2011-07-07 12:30:35'];
-		$questionModel = new QuestionModel($questionData, $this->slugger);
+    public function testQuestionModelInteraction(): void
+    {
+        $questionData = [
+            'Question about color',
+            'What is your favorite color?',
+            '2021-10-07 10:30:35',
+            '2011-07-07 12:30:35'
+        ];
+        $questionModel = new QuestionModel($questionData, $this->slugger);
 
-		$this->assertSame('Question about color', $questionModel->getName());
-		$this->assertSame('What is your favorite color?', $questionModel->getQuestion());
-		$this->assertSame('mocked-slug', $questionModel->getSlug());
-	}
+        // Assertions pour vérifier le comportement attendu
+        $this->assertSame('Question about color', $questionModel->getName());
+        $this->assertSame('What is your favorite color?', $questionModel->getQuestion());
+        $this->assertSame('mocked-slug', $questionModel->getSlug());
+    }
 
+    public function testExecuteCommand(): void
+    {
+        // Exécutez la commande
+        $this->commandTester->execute([]);
+
+        // Vérifiez la sortie de la commande
+        $output = $this->commandTester->getDisplay();
+
+        // Assurez-vous que la sortie contient ce que vous attendez
+        $this->assertStringContainsString(
+            'Questions and answers have been generated and persisted to the database.',
+            $output
+        );
+    }
 }

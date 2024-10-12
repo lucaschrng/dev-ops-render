@@ -7,25 +7,29 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20200708195925 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
-        return '';
+        return 'Add votes column to question table with default value';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE question ADD votes INT NOT NULL DEFAULT 0');
+        // Récupère la table 'question'
+        $table = $schema->getTable('question');
+
+        // Ajoute une colonne 'votes' avec un type 'integer' et une valeur par défaut de 0
+        $table->addColumn('votes', 'integer', [
+            'notnull' => true,
+            'default' => 0
+        ]);
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE question DROP votes');
+        // Récupère la table 'question' et supprime la colonne 'votes'
+        $table = $schema->getTable('question');
+        $table->dropColumn('votes');
     }
 }

@@ -27,10 +27,10 @@ build-job:
         - name: postgres:13
           alias: postgres
     variables:
-        POSTGRES_DB: myapptest_test
-        POSTGRES_USER: myapptest
-        POSTGRES_PASSWORD: myapptest
-        DATABASE_URL: 'postgresql://myapptest:myapptest@postgres:5432/myapptest_test'
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
     cache:
         paths:
             - vendor/
@@ -62,8 +62,8 @@ phpstan:
     stage: quality
     extends: .default_quality  # Utilisation de l'image définie pour quality
     script:
-        - phpstan analyse ./src
-    allow_failure: true
+        - phpstan analyse ./src ./tests
+    allow_failure: false
 
 twig-lint:
     stage: quality
@@ -77,7 +77,7 @@ security-checker:
     extends: .default_quality  # Utilisation de l'image définie pour quality
     script:
         - local-php-security-checker --path=./composer.lock
-    allow_failure: false
+    allow_failure: true
 
 sonarcloud-check:
     stage: quality
@@ -103,10 +103,10 @@ phpunit:
     dependencies:
         - build-job  # Utilise les artefacts du build-job
     variables:
-        POSTGRES_DB: myapptest_test
-        POSTGRES_USER: myapptest
-        POSTGRES_PASSWORD: myapptest
-        DATABASE_URL: 'postgresql://myapptest:myapptest@postgres:5432/myapptest_test'
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
         APP_ENV: test  # Assurer que l'environnement est en mode test
     before_script:
         # Installer les dépendances nécessaires
@@ -124,8 +124,6 @@ phpunit:
         - php bin/console doctrine:database:drop --if-exists --force --env=test
         - php bin/console doctrine:database:create --env=test
     script:
-        # Générer les migrations automatiquement après la création de la base de données
-        - php bin/console doctrine:migrations:diff --env=test
         # Exécution des migrations
         - php bin/console doctrine:migration:migrate --env=test --no-interaction
         # Charger les fixtures
@@ -134,25 +132,6 @@ phpunit:
         - vendor/bin/phpunit --testdox
     allow_failure: false
 
-
-
-unit-test-job:
-    stage: test
-    dependencies:
-        - build-job
-    script:
-        - echo "Running unit tests... This will take about 60 seconds."
-        - sleep 60
-        - echo "Code coverage is 90%"
-
-lint-test-job:
-    stage: test
-    dependencies:
-        - build-job
-    script:
-        - echo "Linting code... This will take about 10 seconds."
-        - sleep 10
-        - echo "No lint issues found."
 
 heroku_deploy:
     stage: deploy

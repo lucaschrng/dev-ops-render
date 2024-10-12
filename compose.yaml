@@ -20,12 +20,7 @@ services:
     container_name: sf5-ci-cd-db
     image: postgres:16
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-    env_file:
-      - .env.local
+      POSTGRES_PASSWORD: postgres
     volumes:
       - ./phpdocker/data/db:/var/lib/postgresql/data:rw
     ports:
@@ -42,7 +37,6 @@ services:
     links:
       - database
 
-
   webserver:
     container_name: sf5-ci-cd-web
     image: donbrico/nginx-alpine:v1.0.0
@@ -55,11 +49,20 @@ services:
 
   php-fpm:
     container_name: sf5-ci-cd-php
-    image: donbrico/php-fpm-81:v1.2.0
+    image: donbrico/php-fpm-81:v1.5.0
     working_dir: /application
+    environment:
+      - APP_ENV=dev  # Définit l'environnement (dev, prod, test)
     volumes:
       - '.:/application'
       - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.1/fpm/conf.d/99-overrides.ini'
+      - './phpdocker/php-fpm/php.ini:/usr/local/etc/php/php.ini'  # Bind-mount pour php.ini
+      - './phpdocker/php-fpm/99-xdebug-dev.ini:/etc/php/8.1/fpm/conf.d/99-xdebug-dev.ini'  # Bind-mount pour 99-xdebug-dev.ini
+      - './phpdocker/php-fpm/xdebug-disabled.sh:/usr/bin/xdebug-disabled.sh' # Bind-mount pour xdebug-disabled.sh
+    depends_on:
+      - database
+      - redis
+      - memcached
 
   node:
     container_name: sf5-ci-cd-node
@@ -67,7 +70,7 @@ services:
     working_dir: /home/wwwroot/sf5-p4
     volumes:
       - .:/home/wwwroot/sf5-p4
-    command: bash -c "yarn && yarn dev --watch"
+    command: [ "bash", "-c", "yarn && yarn dev --watch" ]
     depends_on:
       - php-fpm
 

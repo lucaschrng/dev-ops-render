@@ -30,19 +30,8 @@ use Zenstruck\Foundry\Persistence\ProxyRepositoryDecorator;
  *
  * @phpstan-method        Question&Proxy<Question> create(array|callable $attributes = [])
  * @phpstan-method static Question&Proxy<Question> createOne(array $attributes = [])
- * @phpstan-method static Question&Proxy<Question> find(object|array|mixed $criteria)
- * @phpstan-method static Question&Proxy<Question> findOrCreate(array $attributes)
- * @phpstan-method static Question&Proxy<Question> first(string $sortedField = 'id')
- * @phpstan-method static Question&Proxy<Question> last(string $sortedField = 'id')
- * @phpstan-method static Question&Proxy<Question> random(array $attributes = [])
- * @phpstan-method static Question&Proxy<Question> randomOrCreate(array $attributes = [])
  * @phpstan-method static ProxyRepositoryDecorator<Question, EntityRepository> repository()
  * @phpstan-method static list<Question&Proxy<Question>> all()
- * @phpstan-method static list<Question&Proxy<Question>> createMany(int $number, array|callable $attributes = [])
- * @phpstan-method static list<Question&Proxy<Question>> createSequence(iterable|callable $sequence)
- * @phpstan-method static list<Question&Proxy<Question>> findBy(array $attributes)
- * @phpstan-method static list<Question&Proxy<Question>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Question&Proxy<Question>> randomSet(int $number, array $attributes = [])
  */
 final class QuestionFactory extends PersistentProxyObjectFactory
 {
@@ -52,7 +41,7 @@ final class QuestionFactory extends PersistentProxyObjectFactory
      */
     public function __construct()
     {
-	    parent::__construct();
+        parent::__construct();
     }
 
     public static function class(): string
@@ -65,15 +54,15 @@ final class QuestionFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
-		return [
-			'createdAt' => self::faker()->dateTimeBetween('-1 year'),
-			'updatedAt' => self::faker()->dateTime(),
-			'name' => self::faker()->realText(50),
-			'question' => self::faker()->text(),
-			'askedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
-			'votes' => random_int(-20, 50),
-			'slug' => self::faker()->slug(),
-		];
+        return [
+            'createdAt' => self::faker()->dateTimeBetween('-1 year'),
+            'updatedAt' => self::faker()->dateTime(),
+            'name' => self::faker()->realText(50),
+            'question' => self::faker()->text(),
+            'askedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
+            'votes' => random_int(-20, 50),
+            'slug' => self::faker()->slug(),
+        ];
     }
 
     /**

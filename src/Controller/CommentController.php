@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
-use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,11 +11,9 @@ class CommentController extends AbstractController
 {
     /**
      * @Route("/comments/{id}/vote/{direction<up|down>}", methods="POST")
-     * @throws RandomException
      */
-    public function commentVote($id, $direction, LoggerInterface $logger)
+    public function commentVote($id, $direction, LoggerInterface $logger): JsonResponse
     {
-        // todo - use id to query the database
 
         // use real logic here to save this to the database
         if ($direction === 'up') {

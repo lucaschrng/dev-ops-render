@@ -14,6 +14,6 @@ class CoursCiCdController extends AbstractController
      */
     public function indexAction(): Response
     {
-	    return $this->render('cours-ci-cd/index.html.twig', []);
+        return $this->render('cours-ci-cd/index.html.twig', []);
     }
 }

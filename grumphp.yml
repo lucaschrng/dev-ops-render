@@ -1,2 +1,33 @@
 grumphp:
-    tasks: { behat: null, composer: null, composer_script: null, git_blacklist: null, phpcs: null, phpcsfixer: null, phpstan: null, psalm: null, securitychecker: null }
+
+#  hooks_preset: local
+#  stop_on_failure: true
+#  parallel: false
+#  process_timeout: 60
+
+#  git_hooks:
+#    pre_commit: false
+#    pre_push: false
+#
+#
+#  tasks:
+#    git_blacklist:
+#      keywords:
+#        - 'var_dump'
+#        - 'die'
+#        - 'exit'
+#        - 'debug_print_backtrace'
+#      triggered_by: ['php']
+#
+#    phpcs:
+#      standard: PSR12
+#      triggered_by: ['php']
+#
+#    phpstan:
+#      configuration: phpstan.neon
+#      level: max
+#      triggered_by: ['php']
+
+#    psalm:
+#      config: psalm.xml
+#      triggered_by: ['php']
