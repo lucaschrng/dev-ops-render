@@ -1,3 +1,3 @@
 #[!bin/bash]
 #docker network create --driver bridge ter_networks  --subnet=172.21.0.0/16  --gateway=172.21.0.1 || true
-cd ~/www/sf5-p5 && export $(grep -v '^#' .env.local | xargs) && docker-compose up -d --build --force-recreate
+export $(grep -v '^#' .env.local | xargs) && docker-compose up -d --build --force-recreate

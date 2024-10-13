@@ -47,4 +47,7 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-/vendor/
+
+###> Symfony secrets ###
+/config/secrets/*/private.key
+###< Symfony secrets ###
