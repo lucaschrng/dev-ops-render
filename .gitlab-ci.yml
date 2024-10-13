@@ -89,7 +89,6 @@ sonarcloud-check:
         - merge_requests
         - main
         - develop
-        - master
 
 phpunit:
     stage: test
