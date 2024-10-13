@@ -49,6 +49,6 @@ yarn-error.log
 ###< phpunit/phpunit ###
 
 ###> Symfony secrets ###
-/config/secrets/*/private.key
+/config/secrets/*/*.decrypt.private.php
 ###< Symfony secrets ###
 config/secrets/dev/dev.decrypt.private.php
