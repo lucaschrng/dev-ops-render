@@ -89,6 +89,7 @@ sonarcloud-check:
         - merge_requests
         - main
         - develop
+        - master
 
 phpunit:
     stage: test
@@ -127,7 +128,7 @@ heroku_deploy:
         - apt-get install -yqq ruby ruby-dev nodejs curl --silent
         - curl https://cli-assets.heroku.com/install.sh | sh  # Installer le CLI Heroku
         - heroku --version  # Vérifier l'installation de Heroku CLI
-        - heroku plugins:install heroku-repo  # Installer le plugin heroku-repo pour purger le cache
+        - heroku plugins:install heroku-repo  # Installer le plugin heroku repo pour purger le cache
         - heroku repo:purge_cache -a $HEROKU_APP_NAME  # Purger le cache Heroku
         # Déploiement Heroku
         - gem update --system
