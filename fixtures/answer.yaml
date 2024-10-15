@@ -1,0 +1,8 @@
+App\Entity\Answer:
+    answer_{1..20}:
+      content: '<paragraph(2, true)>'
+      username: '<userName()>'
+      votes: <numberBetween(-20, 20)>
+      question: '@question_*'
+      createdAt: <(new \DateTime('-20 days'))>
+      updatedAt: <(new \DateTime('-10 days'))>
