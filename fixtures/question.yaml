@@ -1,0 +1,8 @@
+App\Entity\Question:
+    question_{1..10}:
+        name: '<sentence()>'
+        slug: '<slug()>'
+        question: '@question_*'
+        votes: <numberBetween(-20, 20)>
+        createdAt: <(new \DateTime('-20 days'))>
+        updatedAt: <(new \DateTime('-10 days'))>
