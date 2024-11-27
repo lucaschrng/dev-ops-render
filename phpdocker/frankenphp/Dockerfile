@@ -33,7 +33,7 @@ RUN useradd -m appuser
 
 USER appuser
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer update --no-dev --optimize-autoloader
 
 USER root
 
