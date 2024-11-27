@@ -55,7 +55,8 @@ RUN chmod +x /usr/local/bin/frankenphp
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install Symfony Runtime and project dependencies
-RUN composer require symfony/runtime \
+RUN composer config --no-plugins allow-plugins.symfony/runtime [true] \
+    && composer require symfony/runtime \
     && composer install --no-dev --optimize-autoloader
 
 # Set entrypoint and default command
