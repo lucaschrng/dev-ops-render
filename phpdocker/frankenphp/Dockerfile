@@ -38,7 +38,10 @@ RUN apk add --no-cache \
         opcache \
     && rm -rf /var/cache/apk/*
 
-RUN adduser -D appuser
+# Create appuser and set permissions
+RUN adduser -D appuser \
+    && mkdir -p /data/caddy/pki \
+    && chown -R appuser:appuser /data/caddy
 
 # Install Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash \
@@ -59,11 +62,14 @@ RUN chmod +x /usr/local/bin/frankenphp \
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_ALLOW_PLUGINS=1
 
+# Set custom data directory for Caddy
+ENV XDG_DATA_HOME=/app/data
 RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 
 # Install Symfony Runtime and project dependencies
 RUN composer install --no-dev --no-scripts --optimize-autoloader
 
+# Switch to non-root user
 USER appuser
 
 # Set entrypoint and default command
