@@ -75,4 +75,4 @@ USER appuser
 EXPOSE 8080 80 443
 
 # Start the FrankenPHP server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+CMD ["php", "-S", "0.0.0.0:443", "-t", "public"]
