@@ -29,6 +29,8 @@ COPY . .
 
 RUN chmod +x /usr/local/bin/frankenphp
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer install --no-dev --optimize-autoloader
 
 ENTRYPOINT ["docker-php-entrypoint"]
