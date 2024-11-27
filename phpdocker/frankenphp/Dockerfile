@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp
+FROM dunglas/frankenphp:php8.3.14-alpine
 
 WORKDIR "/app/public"
 
@@ -25,13 +25,9 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN useradd -m appuser
+COPY . .
 
-RUN chown -R appuser /app
-
-USER appuser
-
-COPY --chown=appuser ../.. /app/public
+RUN chmod +x /usr/local/bin/frankenphp
 
 RUN composer install --no-dev --optimize-autoloader
 
