@@ -59,6 +59,8 @@ RUN chmod +x /usr/local/bin/frankenphp \
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_ALLOW_PLUGINS=1
 
+RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
+
 # Install Symfony Runtime and project dependencies
 RUN composer install --no-dev --no-scripts --optimize-autoloader
 
