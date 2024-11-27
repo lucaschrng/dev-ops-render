@@ -61,6 +61,7 @@ RUN chmod +x /usr/local/bin/frankenphp \
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_ALLOW_PLUGINS=1
 ENV XDG_DATA_HOME=/app/data
+ENV ALLOWED_HOSTS="dev-ops-render.onrender.com,localhost"
 
 RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 
