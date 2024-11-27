@@ -67,6 +67,13 @@ RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 # Install Symfony Runtime and project dependencies
 RUN composer install --no-dev --no-scripts --optimize-autoloader
 
+# Set up Caddyfile
+RUN echo 'localhost { \n \
+    root * /app/public \n \
+    php_fastcgi unix//var/run/php/php8.3-fpm.sock \n \
+    file_server \n \
+}' > /etc/caddy/Caddyfile
+
 # Switch to non-root user
 USER appuser
 
