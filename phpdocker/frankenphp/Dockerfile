@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.3.14
+FROM dunglas/frankenphp:php8.3.14-alpine
 
 WORKDIR "/app/public"
 
