@@ -72,9 +72,3 @@ RUN composer install --no-dev --no-scripts --optimize-autoloader
 
 # Switch to non-root user
 USER appuser
-
-# Expose necessary ports
-EXPOSE 8080 80 443
-
-# Start the FrankenPHP server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
