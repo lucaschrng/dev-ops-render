@@ -56,7 +56,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_ALLOW_PLUGINS=1
 
 # Install Symfony Runtime and project dependencies
-RUN composer install --no-dev --no-script --optimize-autoloader
+RUN composer install --no-dev --no-scripts --optimize-autoloader
 
 # Set entrypoint and default command
 ENTRYPOINT ["docker-php-entrypoint"]
