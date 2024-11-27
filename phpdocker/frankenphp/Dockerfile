@@ -68,7 +68,7 @@ RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
 RUN composer install --no-dev --no-scripts --optimize-autoloader
 
 # Set up Caddyfile
-RUN echo 'localhost { \n \
+RUN echo ':80 { \n \
     root * /app/public \n \
     php_fastcgi unix//var/run/php/php8.3-fpm.sock \n \
     file_server \n \
