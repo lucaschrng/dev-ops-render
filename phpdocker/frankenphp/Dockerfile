@@ -2,8 +2,7 @@ FROM dunglas/frankenphp:php8.3.14
 
 WORKDIR "/app/public"
 
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install
+RUN apt-get update
 
 RUN install-php-extensions \
  pdo \
