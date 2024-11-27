@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp:php8.3.14-alpine
 
-WORKDIR "/app/public"
+WORKDIR "/app"
 
 # Install necessary dependencies
 RUN apk add --no-cache \
@@ -38,6 +38,11 @@ RUN apk add --no-cache \
         opcache \
     && rm -rf /var/cache/apk/*
 
+# RUN adduser -D appuser
+
+# RUN install-php-extensions \
+#   pdo pdo_mysql pdo_pgsql gd intl zip opcache
+
 # Install Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
@@ -57,7 +62,7 @@ ENV COMPOSER_ALLOW_PLUGINS=1
 
 # Install Symfony Runtime and project dependencies
 RUN composer require symfony/runtime \
-    && composer install --no-dev --optimize-autoloader
+    && composer install --no-dev --no-script --optimize-autoloader
 
 # Set entrypoint and default command
 ENTRYPOINT ["docker-php-entrypoint"]
