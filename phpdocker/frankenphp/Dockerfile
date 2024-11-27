@@ -72,8 +72,7 @@ RUN composer install --no-dev --no-scripts --optimize-autoloader
 USER appuser
 
 # Expose necessary ports
-EXPOSE 80 443
+EXPOSE 8080 80 443
 
-# Set entrypoint and default command
-ENTRYPOINT ["/usr/local/bin/frankenphp"]
-CMD ["run"]
+# Start the FrankenPHP server
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
