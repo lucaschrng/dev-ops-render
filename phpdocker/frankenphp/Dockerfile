@@ -29,7 +29,13 @@ COPY . .
 
 RUN chmod +x /usr/local/bin/frankenphp
 
+RUN useradd -m appuser
+
+USER appuser
+
 RUN composer install --no-dev --optimize-autoloader
+
+USER root
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["frankenphp"]
