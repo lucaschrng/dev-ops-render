@@ -1,0 +1,118 @@
+services:
+  - name: sf5-ci-cd-memcached
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: donbrico/memcached:v1.0.0
+
+  - name: sf5-ci-cd-mailhog
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: donbrico/mailhog:v1.0.0
+    ports:
+      - name: http
+        type: tcp
+        port: 8025
+        external_port: 2011
+
+  - name: sf5-ci-cd-redis
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: donbrico/redis-alpine:v1.0.0
+
+  - name: sf5-ci-cd-db
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: postgres:16
+      env_vars:
+        - key: POSTGRES_PASSWORD
+          value: postgres
+      mounts:
+        - type: volume
+          source: db-data
+          target: /var/lib/postgresql/data
+    ports:
+      - name: postgres
+        type: tcp
+        port: 5432
+        external_port: 2022
+
+  - name: sf5-ci-cd-pgadmin
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: dpage/pgadmin4
+      links:
+        - sf5-ci-cd-db
+    ports:
+      - name: pgadmin
+        type: tcp
+        port: 80
+        external_port: 2023
+
+  - name: sf5-ci-cd-php
+    type: web
+    env: docker
+    plan: free
+    docker:
+      image: donbrico/frankenphp:v1.0.0
+      mounts:
+        - type: volume
+          source: app-data
+          target: /app/public
+        - type: volume
+          source: caddy-data
+          target: /data
+        - type: volume
+          source: caddy-config
+          target: /config
+        - type: volume
+          source: php-ini
+          target: /usr/local/etc/php/php.ini
+      env_vars:
+        - key: ENV_FILE
+          value: .env.local
+      ports:
+        - name: http
+          type: tcp
+          port: 80
+        - name: https
+          type: tcp
+          port: 443
+        - name: http3
+          type: udp
+          port: 443
+      depends_on:
+        - sf5-ci-cd-db
+        - sf5-ci-cd-redis
+        - sf5-ci-cd-memcached
+
+  - name: sf5-ci-cd-node
+    type: private
+    env: docker
+    plan: free
+    docker:
+      image: donbrico/node-14:v1.1.0
+      command: bash -c "yarn && yarn dev --watch"
+      mounts:
+        - type: volume
+          source: node-src
+          target: /home/wwwroot/sf5-p4
+      depends_on:
+        - sf5-ci-cd-php
+
+volumes:
+  - name: db-data
+  - name: app-data
+  - name: caddy-data
+  - name: caddy-config
+  - name: php-ini
+  - name: node-src
