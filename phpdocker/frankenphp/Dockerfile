@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.3.14
+FROM dunglas/frankenphp:php8.3.14-alpine
 
 WORKDIR "/app/public"
 
@@ -29,13 +29,7 @@ COPY . .
 
 RUN chmod +x /usr/local/bin/frankenphp
 
-RUN useradd -m appuser
-
-USER appuser
-
-RUN composer update --no-dev --optimize-autoloader
-
-USER root
+RUN composer install --no-dev --optimize-autoloader
 
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD ["frankenphp"]
