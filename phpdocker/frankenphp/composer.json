@@ -1,0 +1,209 @@
+{
+    "name": "vendor/project-name",
+    "description": "A brief description of your project",
+    "type": "project",
+    "license": "proprietary",
+
+    "require": {
+        "php": ">=8.0",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-intl": "*",
+        "composer/package-versions-deprecated": "^1.11",
+        "doctrine/annotations": "^1.12",
+        "doctrine/doctrine-bundle": "^2.3",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.8",
+        "knplabs/knp-snappy-bundle": "^1.6",
+        "knplabs/knp-time-bundle": "^1.19",
+        "league/commonmark": "^2.4",
+        "league/html-to-markdown": "^5.1",
+        "psr/http-factory": "^1.0",
+        "sentry/sentry-symfony": "^5.0",
+        "stof/doctrine-extensions-bundle": "^1.5.0",
+        "symfony/asset": "5.4.*",
+        "symfony/console": "5.4.*",
+        "symfony/dotenv": "5.4.*",
+        "symfony/flex": "^1.21.6",
+        "symfony/framework-bundle": "5.4.*",
+        "symfony/mailer": "5.4.*",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/proxy-manager-bridge": "5.4.*",
+        "symfony/security-bundle": "5.4.*",
+        "symfony/security-core": "5.4.*",
+        "symfony/security-guard": "5.4.*",
+        "symfony/stopwatch": "5.4.*",
+        "symfony/twig-bundle": "5.4.*",
+        "symfony/webpack-encore-bundle": "^1.7",
+        "symfony/yaml": "5.4.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/markdown-extra": "^3.10",
+        "twig/twig": "^3.4"
+    },
+
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "phpro/grumphp": "^1.16",
+        "phpunit/phpunit": "^9.5",
+        "dama/doctrine-test-bundle": "^7.1",
+        "dg/bypass-finals": "^1.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "hautelook/alice-bundle": "^2.10",
+        "heroku/heroku-buildpack-php": "^249.0",
+        "nunomaduro/phpinsights": "^2.6",
+        "phpdocumentor/reflection-docblock": "^5.3",
+        "phpmd/phpmd": "^2.13",
+        "phpstan/phpdoc-parser": "^1.2",
+        "phpstan/phpstan": "^1.9",
+        "squizlabs/php_codesniffer": "^3.10",
+        "symfony/browser-kit": "5.4.*, !=5.4.7",
+        "symfony/css-selector": "5.4.*, !=5.4.7",
+        "symfony/debug-bundle": "5.4.*",
+        "symfony/maker-bundle": "^1.15",
+        "symfony/phpunit-bridge": "^6.1",
+        "symfony/var-dumper": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*",
+        "symplify/easy-coding-standard": "^12.2",
+        "vimeo/psalm": "^5.2",
+        "zenstruck/foundry": "^1.38"
+    },
+
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "platform": {},
+        "allow-plugins": {
+            "symfony/flex": true,
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
+        }
+    },
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+
+    "scripts": {
+        "heroku-postbuild": "node_modules/.bin/encore production",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "cs-fixer": "php-cs-fixer fix",
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "regen-migrations": [
+            "@php bin/console doctrine:database:drop -f --if-exists",
+            "@php bin/console doctrine:database:create",
+            "@php bin/console doctrine:schema:update -f --complete",
+            "@php bin/console app:generate-questions-answers",
+            "@php bin/console cache:clear"
+        ],
+        "load-data": [
+            "@php bin/console doctrine:database:drop -f --if-exists",
+            "@php bin/console doctrine:database:create",
+            "@php bin/console doctrine:schema:update -f --complete",
+            "@php bin/console doctrine:fixtures:load -n",
+            "@php bin/console app:generate-data-migrations"
+        ],
+        "compile": [
+            "@php bin/console doctrine:migration:migrate -n --env=prod",
+            "@php bin/console cache:clear --env=prod",
+            "@php bin/console cache:warmup --env=prod"
+        ],
+        "compile-dev": [
+            "@php bin/console doctrine:database:drop -f --if-exists",
+            "@php bin/console doctrine:database:create",
+            "@php bin/console doctrine:migrations:migrate -n -vvv",
+            "@php bin/console doctrine:fixtures:load -n -vvv",
+            "@php bin/console cache:clear",
+            "@php bin/console cache:warmup"
+        ],
+        "code-style": [
+            "vendor/bin/ecs --fix"
+        ],
+        "code:quality": [
+            "@php -d memory_limit=4G ./vendor/bin/phpcs -v --standard=PSR12 src tests --report=summary",
+            "@php -d memory_limit=4G ./vendor/bin/php-cs-fixer fix tests",
+            "@php -d memory_limit=4G ./vendor/bin/phpcbf src",
+            "@php -d memory_limit=4G ./vendor/bin/phpcbf tests"
+        ],
+        "run-fixtures": [
+            "@php bin/console doctrine:database:drop --force --env=test",
+            "@php bin/console doctrine:database:create --env=test",
+            "@php bin/console doctrine:schema:update --force --env=test",
+            "@php -d memory_limit=1G bin/console cache:clear --env=test"
+        ],
+        "load-fixtures": [
+            "@php bin/console doctrine:database:drop --force --env=dev",
+            "@php bin/console doctrine:database:create --env=dev",
+            "@php bin/console doctrine:migration:migrate --env=dev -n",
+            "@php bin/console doctrine:fixtures:load -n --env=dev",
+            "@php -d memory_limit=1G bin/console cache:clear --env=dev"
+        ],
+        "run-tests": [
+            "@php bin/console doctrine:database:drop --if-exists --force --env=test",
+            "@php bin/console doctrine:database:create --env=test",
+            "@php bin/console doctrine:migration:migrate --env=test -n -vvv",
+            "@php bin/console doctrine:fixtures:load -n --env=test -v",
+            "@php -d memory_limit=1G bin/console cache:clear --env=test",
+            "@php vendor/bin/phpunit --testdox"
+        ],
+        "reset-db": [
+            "@php bin/console doctrine:database:drop --force --env=dev",
+            "@php bin/console doctrine:database:create --env=dev",
+            "@php -d memory_limit=1G bin/console cache:clear --env=dev"
+        ],
+        "run-tests2": [
+            "@php bin/console doctrine:database:drop --if-exists --force --env=test",
+            "@php bin/console doctrine:database:create --env=test -n",
+            "@php bin/console doctrine:migrations:diff --env=test -n",
+            "@php bin/console doctrine:migration:migrate --env=test -n",
+            "@php vendor/bin/phpunit --testdox"
+        ]
+    },
+
+    "scripts-descriptions": {
+        "heroku-postbuild": "Build assets for Heroku",
+        "compile": "prepare and load database of project",
+        "compile-dev": "prepare and load database of project with fixtures",
+        "code-style": "Check code style"
+    },
+
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "require": "5.4.*",
+            "docker": true
+        }
+    }
+}
