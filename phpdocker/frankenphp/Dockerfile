@@ -3,13 +3,7 @@ FROM dunglas/frankenphp:php8.3.14
 WORKDIR "/app/public"
 
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install \
-    vim curl wget yarn npm nodejs apt-utils git \
-    build-essential locales acl mailutils wget zip unzip yarn npm nodejs iputils-ping ca-certificates \
-    gnupg gnupg1 gnupg2 libzip-dev zlib1g-dev libicu-dev g++ libpng-dev libjpeg-dev libfreetype6-dev \
-    libpq-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    && apt-get -y --no-install-recommends install
 
 RUN install-php-extensions \
  pdo \
@@ -30,6 +24,7 @@ COPY . .
 RUN chmod +x /usr/local/bin/frankenphp
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_ALLOW_PLUGINS=1
 
 RUN composer require symfony/runtime
 
