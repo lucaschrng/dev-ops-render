@@ -2,7 +2,7 @@ FROM dunglas/frankenphp:php8.3.14-alpine
 
 WORKDIR "/app/public"
 
-RUN apt-get update
+RUN apk-get update
 
 RUN install-php-extensions \
  pdo \
