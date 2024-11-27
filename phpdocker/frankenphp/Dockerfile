@@ -23,6 +23,17 @@ RUN install-php-extensions \
 RUN wget https://get.symfony.com/cli/installer -O - | bash \
     && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
-COPY ../.. /app/public
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN useradd -m appuser
 
+RUN chown -R appuser /app
+
+USER appuser
+
+COPY --chown=appuser ../.. /app/public
+
+RUN composer install --no-dev --optimize-autoloader
+
+ENTRYPOINT ["docker-php-entrypoint"]
+CMD ["frankenphp"]
