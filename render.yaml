@@ -32,22 +32,6 @@ services:
       maxInstances: 1
     plan: starter # Adjust plan if needed
 
-  # PostgreSQL database service
-  - type: database
-    name: database
-    plan: basic-1gb
-    diskSizeGB: 10
-    envVars:
-      - key: POSTGRES_PASSWORD
-        value: postgres
-    readReplicas: [] # No read replicas configured
-    ipAllowList: # Allow all IPs
-      - source: 0.0.0.0/0
-        description: all-access
-    volumes:
-      - name: database-data
-        mountPath: /var/lib/postgresql/data
-
   # PgAdmin service
   - type: web
     name: pgadmin
@@ -103,3 +87,12 @@ services:
     volumes:
       - name: node-app-data
         mountPath: /home/wwwroot/sf5-p4
+
+databases:
+  # PostgreSQL database
+  - name: database
+    plan: basic-1gb
+    diskSizeGB: 10
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: allow all
