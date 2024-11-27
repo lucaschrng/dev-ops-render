@@ -2,8 +2,6 @@ FROM dunglas/frankenphp:php8.3.14-alpine
 
 WORKDIR "/app/public"
 
-RUN apk-get update
-
 RUN install-php-extensions \
  pdo \
  pdo_mysql \
