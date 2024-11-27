@@ -66,4 +66,4 @@ USER appuser
 
 # Set entrypoint and default command
 ENTRYPOINT ["/usr/local/bin/frankenphp"]
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]
+CMD ["run", "--config", "/etc/caddy/Caddyfile"]
