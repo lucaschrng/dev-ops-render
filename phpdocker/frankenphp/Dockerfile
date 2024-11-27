@@ -51,7 +51,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . .
 
 # Ensure FrankenPHP binary is executable
-RUN chmod +x /usr/local/bin/frankenphp
+RUN chmod +x /usr/local/bin/frankenphp \
+    && chown appuser:appuser /usr/local/bin/frankenphp \
+    && ls -l /usr/local/bin/frankenphp
 
 # Set environment variables for Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -63,5 +65,5 @@ RUN composer install --no-dev --no-scripts --optimize-autoloader
 USER appuser
 
 # Set entrypoint and default command
-ENTRYPOINT ["docker-php-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/frankenphp"]
 CMD ["frankenphp"]
