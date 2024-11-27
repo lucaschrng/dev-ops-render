@@ -60,6 +60,8 @@ RUN chmod +x /usr/local/bin/frankenphp \
 # Set environment variables for Composer and Caddy
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_ALLOW_PLUGINS=1
+ENV XDG_DATA_HOME=/app/data
+ENV SERVER_NAME=dev-ops-render.onrender.com
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
@@ -75,4 +77,4 @@ USER appuser
 EXPOSE 8080 80 443
 
 # Start the FrankenPHP server
-CMD []
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
